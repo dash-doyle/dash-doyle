@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashiell Doyle — Ficha de Personagem (Hogwarts 2099)</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Gryffindor Palette - Deep Crimson, Gold & Amber */
+  --bg-dark: #110708;
+  --bg-card: #1c0b0e;
+  --bg-card-hover: #2a1014;
+  --crimson-dark: #3b0a0e;
+  --crimson: #7a1219;
+  --crimson-bright: #ad1823;
+  --gold-dark: #8c6d23;
+  --gold: #d4af37;
+  --gold-bright: #f5cf56;
+  --amber: #e67e22;
+  --parchment-bg: #f4ebd0;
+  --parchment-border: #d4c59a;
+  --parchment-text: #1f140e;
+  --text-main: #f5ebdf;
+  --text-muted: #c4b3a3;
+  --text-dim: #8a7667;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --border-crimson: rgba(173, 24, 35, 0.3);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.15);
+  --shadow-crimson: 0 0 30px rgba(122, 18, 25, 0.4);
+  --font-title: 'Cinzel', serif;
+  --font-decorative: 'Cinzel Decorative', serif;
+  --font-body: 'Literata', serif;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--bg-dark);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--crimson-dark);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+/* Canvas Animation Background */
+#spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+/* Background Gradients */
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(122, 18, 25, 0.28), transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.09), transparent 50%),
+    radial-gradient(circle at 15% 50%, rgba(59, 10, 14, 0.45), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layout Wrapper */
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+}
+
+/* Navigation Bar */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17, 7, 8, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.site-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+@media (max-width: 768px) {
+  .site-nav-inner { padding: 0 20px; }
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+}
+
+.nav-brand svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--gold);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--gold-bright);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* HERO SECTION */
+.hero {
+  padding: 80px 0 60px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-crimson);
+}
+
+@media (max-width: 992px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(122, 18, 25, 0.35);
+  border: 1px solid var(--border-gold);
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+.hero-tag .spark-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--gold-bright);
+  animation: pulseSpark 1.5s infinite alternate;
+}
+
+@keyframes pulseSpark {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 1; }
+}
+
+.hero h1 {
+  font-family: var(--font-title);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  color: #ffffff;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.hero h1 span.surname {
+  color: var(--gold-bright);
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(135deg, #fff 20%, var(--gold-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p.subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  max-width: 620px;
+}
+
+@media (max-width: 992px) {
+  .hero p.subtitle { margin: 0 auto 32px; }
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 576px) {
+  .hero-meta-grid { grid-template-columns: 1fr; }
+}
+
+.meta-box {
+  background: rgba(28, 11, 14, 0.75);
+  border: 1px solid var(--border-gold);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+}
+
+.meta-box .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.meta-box .val {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+/* Portrait Card Frame */
+.portrait-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  box-shadow: var(--shadow-crimson), var(--shadow-glow);
+  background: var(--bg-card);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.portrait-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.35), 0 0 45px rgba(122, 18, 25, 0.75);
+}
+
+.portrait-card img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: contrast(1.05) brightness(0.95);
+  transition: filter 0.4s ease;
+}
+
+.portrait-card:hover img {
+  filter: contrast(1.1) brightness(1.02);
+}
+
+.portrait-overlay {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(17, 7, 8, 0.95) 0%, rgba(17, 7, 8, 0.6) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.portrait-name {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  font-weight: 700;
+}
+
+.portrait-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* SECTION HEADINGS */
+.section-header {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 10px;
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+/* SECTION SHELL */
+section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border-crimson);
+  position: relative;
+}
+
+/* PARCHMENT STORY SCROLL SECTION (Moved to top!) */
+.story-scroll-container {
+  background: var(--parchment-bg);
+  color: var(--parchment-text);
+  border-radius: 8px;
+  padding: 65px 75px;
+  position: relative;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.75),
+    inset 0 0 90px rgba(140, 109, 35, 0.22);
+  border: 4px double var(--parchment-border);
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .story-scroll-container { padding: 40px 24px; }
+}
+
+/* Decorative Parchment Wax Seal */
+.wax-seal {
+  position: absolute;
+  top: 35px;
+  right: 45px;
+  width: 74px;
+  height: 74px;
+  background: radial-gradient(circle, #a81c24 0%, #59090e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  border: 2px solid #7a1219;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.wax-seal:hover {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.wax-seal svg {
+  width: 38px;
+  height: 38px;
+  fill: var(--gold-bright);
+}
+
+.scroll-header {
+  text-align: center;
+  margin-bottom: 45px;
+  position: relative;
+}
+
+.scroll-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 8px;
+}
+
+.scroll-title {
+  font-family: var(--font-decorative);
+  font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+  color: #2b0b10;
+  margin-bottom: 8px;
+}
+
+.scroll-subtitle {
+  font-family: var(--font-title);
+  font-style: italic;
+  color: #664c38;
+  font-size: 1.15rem;
+}
+
+.story-text-body {
+  max-width: 780px;
+  margin: 0 auto;
+  font-size: 1.12rem;
+  line-height: 1.9;
+  color: #261710;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.story-text-body p {
+  margin-bottom: 26px;
+}
+
+.story-text-body p:first-of-type::first-letter {
+  font-family: var(--font-decorative);
+  font-size: 5rem;
+  float: left;
+  line-height: 0.8;
+  padding: 6px 12px 0 0;
+  color: var(--crimson-bright);
+}
+
+.scroll-footer-mark {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7a5c43;
+  margin-top: 45px;
+  padding-top: 25px;
+  border-top: 1px solid var(--parchment-border);
+}
+
+/* FAMILY TREE SECTION */
+.tree-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+  overflow-x: auto;
+}
+
+.tree-svg-container {
+  min-width: 700px;
+  width: 100%;
+}
+
+.tree-caption-card {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: rgba(59, 10, 14, 0.45);
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* FAMILY GRID SECTION */
+.family-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.fam-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.fam-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--crimson-dark);
+  transition: background 0.3s ease;
+}
+
+.fam-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-gold);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.fam-card:hover::before {
+  background: var(--gold);
+}
+
+.fam-card.active-dash {
+  border-color: var(--gold);
+  background: rgba(59, 10, 14, 0.65);
+  box-shadow: var(--shadow-glow);
+}
+
+.fam-card.active-dash::before {
+  background: var(--gold-bright);
+}
+
+.fam-role {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.fam-name {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.fam-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* APPEARANCE & IMAGE GALLERY SECTION */
+.appearance-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .appearance-grid { grid-template-columns: 1fr; }
+}
+
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  aspect-ratio: 4/5;
+}
+
+.gallery-item.featured {
+  grid-column: span 2;
+  aspect-ratio: 16/9;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+  filter: brightness(1.05);
+}
+
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  padding: 12px 16px;
+  background: linear-gradient(to top, rgba(17, 7, 8, 0.9), transparent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold-bright);
+}
+
+.stats-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 28px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--border-crimson);
+}
+
+.stat-item:last-child { border-bottom: none; }
+
+.stat-key {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.stat-val {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+}
+
+/* OBJECTS & INVENTORY SECTION */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.inv-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 10px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.inv-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-bright);
+}
+
+.inv-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(122, 18, 25, 0.4);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.inv-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--gold-bright);
+}
+
+.inv-title {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.inv-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* DESPEDIDA & LETTER SECTION */
+.letter-box {
+  background: var(--parchment-bg);
+  color: var(--parchment-text);
+  border-radius: 8px;
+  padding: 50px 60px;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  border: 3px double var(--parchment-border);
+}
+
+@media (max-width: 768px) {
+  .letter-box { padding: 36px 24px; }
+}
+
+.letter-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 12px;
+}
+
+.letter-title {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  color: #2b0b10;
+  margin-bottom: 20px;
+}
+
+.letter-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #261710;
+}
+
+.letter-content p { margin-bottom: 16px; }
+
+.letter-signature {
+  margin-top: 30px;
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--crimson-bright);
+  font-weight: 700;
+}
+
+/* FOOTER */
+footer {
+  padding: 50px 0;
+  text-align: center;
+  border-top: 1px solid var(--border-crimson);
+  background: rgba(17, 7, 8, 0.98);
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Lightbox Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  position: relative;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow), var(--shadow-crimson);
+}
+
+.modal-content img {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  background: rgba(122, 18, 25, 0.8);
+  color: #fff;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.modal-close:hover {
+  transform: scale(1.1);
+  background: var(--crimson-bright);
+}
+</style>
+</head>
+<body>
+
+<!-- Canvas Ember Animation -->
+<canvas id="spark-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<!-- NAVIGATION BAR -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="#inicio" class="nav-brand">
+      <!-- Gryffindor Lion Crest Icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 2.18l7 2.33v4.69c0 4.54-3.13 8.78-7 9.8-3.87-1.02-7-5.26-7-9.8V6.51l7-2.33zM12 7a2 2 0 0 0-2 2c0 1.1.9 2 2 2s2-.9 2-2a2 2 0 0 0-2-2zm-3 7c0-1.5 1.5-3 3-3s3 1.5 3 3v2H9v-2z"/>
+      </svg>
+      <span>Dash Doyle</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#historia">História</a></li>
+      <li><a href="#linhagem">Linhagem</a></li>
+      <li><a href="#familia">Família</a></li>
+      <li><a href="#aparencia">Aparência</a></li>
+      <li><a href="#objetos">Pertences</a></li>
+      <li><a href="#carta">Carta</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="inicio" style="border-top:none;">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="spark-dot"></span> Ficha Geral · RPG Hogwarts 2099 (3º Ano)
+      </div>
+
+      <h1>Dashiell <span class="surname">"Dash" Doyle</span></h1>
+
+      <p class="subtitle">
+        Treze anos, seis irmãos, um sobrenome materno de peso em Londres que ele recusa usar no dia a dia, e um lugar reservado no Expresso de Hogwarts — onde pretende chegar sendo exatamente o garoto impulsivo, destemido e leal que sempre foi.
+      </p>
+
+      <div class="hero-meta-grid">
+        <div class="meta-box">
+          <div class="lbl">Nascimento</div>
+          <div class="val">2086 · Poeira de Opala (Austrália)</div>
+        </div>
+        <div class="meta-box">
+          <div class="lbl">Ascendência</div>
+          <div class="val">Mestiço (Mãe Bruxa, Pai Aborto)</div>
+        </div>
+        <div class="meta-box">
+          <div class="lbl">Escola Prévia</div>
+          <div class="val">Academia de Bellambi (1º-2º Ano)</div>
+        </div>
+        <div class="meta-box">
+          <div class="lbl">Ingresso Hogwarts</div>
+          <div class="val">3º Ano Letivo (2099–2100)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="portrait-card" onclick="openModal('images/media_1786300878813.jpg')">
+        <img src="images/media_1786300878813.jpg" alt="Dashiell Dash Doyle - Retrato Oficial">
+        <div class="portrait-overlay">
+          <div class="portrait-name">Dashiell Doyle</div>
+          <div class="portrait-tag">Representado por Juraj Slafkovsky · 13 Anos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTÓRIA COMPLETA (TEXTO EXATO FORNECIDO PELO USUÁRIO) -->
+  <section id="historia">
+    <div class="section-header">
+      <div class="section-eyebrow">01 · Manuscrito & Origens</div>
+      <h2 class="section-title">A História de Dashiell Doyle</h2>
+      <p class="section-desc">
+        A trajetória completa de Poeira de Opala até o Expresso de Hogwarts.
+      </p>
+    </div>
+
+    <div class="story-scroll-container">
+      <div class="wax-seal" title="Selo da Carta Gringotts">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+        </svg>
+      </div>
+
+      <div class="scroll-header">
+        <div class="scroll-kicker">Registro Pessoal & Biografia</div>
+        <h2 class="scroll-title">Dashiell Doyle</h2>
+        <div class="scroll-subtitle">de Poeira de Opala até o Expresso de Hogwarts — 2099</div>
+      </div>
+
+      <div class="story-text-body">
+        <p>Elowen Fairstone tinha vinte e dois anos quando decidiu que amava mais o homem que não conseguia ver o próprio feitiço de aquecimento funcionar do que a cadeira que a esperava, um dia, entre os Fairstone reconhecidos do Wizengamot. Desmond Doyle era aborto, nascido numa família de bruxos que nunca soube o que fazer com um filho sem magia, e trabalhava, quando os dois se conheceram, cuidando dos animais — mágicos e comuns — de uma propriedade vizinha à mansão da família dela. Ninguém em nenhuma das duas famílias os apoiou. Os Fairstone fizeram o que os Fairstone sempre fizeram quando algo ameaçava o nome: riscaram Elowen do Livro de Linhagem, formalmente, numa cerimônia fechada, sem gritos, só assinaturas. O que eles não sabiam — ou fingiram não saber — é que um vínculo de sangue muito mais antigo que qualquer cerimônia de família, registrado havia gerações em Gringotts, não podia ser desfeito por uma assinatura. Elowen deixaria de ser reconhecida. Ela nunca deixaria de ser, legalmente, uma Fairstone. E os filhos que tivesse carregariam o nome com ela, quisesse a família ou não.</p>
+
+        <p>Os dois atravessaram meio mundo pra recomeçar longe da vergonha alheia. Compraram, com o pouco que restou da herança de Elowen antes do corte, uma propriedade seca e bonita no interior de Nova Gales do Sul, num vilarejo de garimpeiros de opala que mal aparecia nos mapas. Ali, entre eucaliptos e cercas sempre precisando de reparo, os dois construíram uma vida que não parecia nada com a que qualquer um deles tinha imaginado — e que, com o tempo, os dois passaram a preferir. Vieram os filhos, um atrás do outro: Wren primeiro, depois Cass, depois, em 2086, Dashiell — o do meio, embora ninguém tivesse planejado que ele fosse ficar exatamente no centro de tudo. Depois dele vieram Finn, Ivy e, por fim, a pequena Mari. Seis crianças crescendo soltas entre potes de poção na cozinha da mãe e o santuário improvisado de criaturas feridas que o pai mantinha nos fundos — Bowtruckles com asas quebradas, Nifflers resgatados de armadilhas de garimpeiro, uma vez até um dragão-de-outback jovem demais pra voltar sozinho pro deserto.</p>
+
+        <p>Dash deu sinais de magia cedo, e sempre do jeito mais espalhafatoso possível. Aos três anos, fez um jarro de essência de dragão-de-outback explodir em fumaça colorida no meio de um ataque de birra, e o teto da cozinha ficou verde por uma semana inteira. Aos seis, tentou recriar sozinho os fogos de artifício que tinha visto um bruxo viajante soltar na feira de Poeira de Opala, e incendiou o galpão de ferramentas da família. Ninguém se machucou. Ele ganhou uma cicatriz lisa no antebraço direito, uma bronca que durou o verão inteiro e, no fundo, nenhum arrependimento de verdade — só a promessa, feita mais pra si mesmo que pros pais, de que da próxima vez faria mais longe de casa. Foi por volta dessa época que os outros começaram a notar o que se tornaria o jeito dele de ser: incapaz de ficar parado, sempre atrás da próxima coisa, puxando assunto com qualquer criatura ou pessoa que cruzasse o caminho.</p>
+
+        <p>Aos oito anos, entrou na Academia de Bellambi junto com Cass, a escola de magia mais próxima de casa. Passava mais tempo pensando no santuário do pai do que nos livros, mas nunca tirou notas ruins o bastante pra alguém se preocupar de verdade. Foi em Bellambi que conheceu Sable Okonkwo, filho de trouxas, quieto, sempre com um livro debaixo do braço — e foi por causa de Sable que Dash teve, aos nove anos, a primeira briga que valeu a pena. Três veteranos perseguiam o colega pelos corredores por causa do sangue, os mesmos termos, praticamente as mesmas palavras, que Dash já tinha ouvido os avós maternos usarem sobre a própria mãe em histórias contadas baixinho. Ele não pensou duas vezes antes de entrar no meio. Levou detenção. Ganhou um amigo pra vida toda e, sem perceber direito na hora, confirmou pra si mesmo o que já desconfiava: que havia coisas — sangue, nome, quem merece ser aceito — pelas quais valia a pena brigar, mesmo perdendo.</p>
+
+        <p>A vida em casa seguiu cheia e barulhenta. Wren foi pra Sydney estudar Cura. Cass virou o tipo de irmão mais velho que sempre chegava a tempo de apagar o que Dash tinha acabado de incendiar, literal ou não. Finn crescia esperando a vez de entrar em Bellambi também. Ivy virou confidente — era pra ela, deitados no telhado de noite, que Dash admitia o que nunca diria em voz alta de dia: que uma parte dele tinha medo de ser, um dia, considerado inconveniente demais, do mesmo jeito que a família Fairstone tinha considerado a mãe. Mari, a caçula, aprendeu a andar segurando o dedo dele. Do outro lado do mundo, em Londres, nenhum Fairstone reconhecido nunca soube o nome de nenhuma dessas crianças.</p>
+
+        <p>Em 2098, Augustus Fairstone, o patriarca que Dash nunca conheceu e nunca conheceria, morreu. Nenhum convite pro funeral chegou a Poeira de Opala — não seria diferente disso, nunca tinha sido. Mas a morte de um patriarca exige acerto de contas, e foi durante o balanço formal do patrimônio em Gringotts que um duende revisor, cumprindo a letra fria da lei e não a vontade de ninguém, encontrou a cláusula esquecida havia gerações: o Vínculo de Sangue Fairstone garantia, a qualquer herdeiro reconhecido por sangue — reconhecido pela lei, não pela família —, o custeio integral da educação na escola de magia de sua escolha. Dash tinha doze anos quando a notícia chegou em casa, treze quando a carta oficial pousou na mesa da cozinha. Escolheu Hogwarts sem hesitar muito. Ninguém em Londres mandou flores, parabéns ou qualquer sinal de que soubesse que ele existia. Ele decidiu ir assim mesmo.</p>
+
+        <p>No dia 31 de agosto de 2099, a família inteira fez a viagem de quase dez horas até o escritório de Chaves de Portal em Sydney só para vinte minutos de despedida. Elowen ajeitou o colarinho dele três vezes antes de conseguir falar, e quando falou foi só "seja exatamente esse tanto de barulhento que você já é" — o mais perto que ela chegava de dar uma bênção. Desmond apertou o ombro dele com a mão calejada e pediu que escrevesse sempre que visse uma criatura que não soubesse reconhecer. Cass entregou um bloco de anotações sobre Poções, sem cerimônia, "porque alguém precisa te impedir de explodir o próprio dormitório". Wren abraçou apertado demais e por tempo demais. Finn ficou quieto, incomodado por ser a primeira vez, em três anos, que os dois não iam pra escola juntos. Ivy sussurrou que tinha escondido a velha lata de fósforos queimados — a mesma do incêndio de 2092 — no fundo falso do baú dele. Mari chorou até a voz falhar, gritando "meu Dash", e só se acalmou quando ele prometeu, palavra de irmão do meio, voltar no Natal com uma história boa o bastante pra valer a espera.</p>
+
+        <p>Ele segurou a Chave de Portal — uma lata de biscoitos velha e amassada — junto com os outros passageiros, sentiu o puxão familiar no umbigo, e quando abriu os olhos de novo o ar já cheirava a fumaça de trem, não a eucalipto. Treze anos, o nome de uma família que nunca o recebeu gravado nos próprios pertences, uma cicatriz no braço, uma pedra de opala no bolso e nenhuma ideia exata do que Hogwarts ia fazer com ele. Só a certeza, essa sim inteira e sua, de que qualquer que fosse a casa que o Chapéu Seletor escolhesse, ele já tinha decidido, muito antes de chegar, que ia entrar nela sendo exatamente quem sempre foi.</p>
+      </div>
+
+      <div class="scroll-footer-mark">
+        ✦ Documento Registrado no Ano Mágico de 2099 ✦
+      </div>
+    </div>
+  </section>
+
+  <!-- LINHAGEM / ÁRVORE GENEALÓGICA -->
+  <section id="linhagem">
+    <div class="section-header">
+      <div class="section-eyebrow">02 · Linhagem</div>
+      <h2 class="section-title">O Sangue e a Árvore da Família</h2>
+      <p class="section-desc">
+        O ramo Fairstone riscado em Londres e o ramo Doyle que cresceu forte no interior australiano.
+      </p>
+    </div>
+
+    <div class="tree-box">
+      <div class="tree-svg-container">
+        <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+          <!-- Top Crest Node -->
+          <rect x="330" y="15" width="140" height="50" rx="6" fill="#1c0b0e" stroke="#d4af37" stroke-width="1.8"/>
+          <text x="400" y="36" text-anchor="middle" font-family="Fira Code" font-size="10" fill="#d4af37" letter-spacing="1">CASA FAIRSTONE</text>
+          <text x="400" y="52" text-anchor="middle" font-family="Cinzel" font-style="italic" font-size="11" fill="#f5ebdf">"Fides et Fortuna"</text>
+
+          <!-- Main line -->
+          <line x1="400" y1="65" x2="400" y2="105" stroke="#ad1823" stroke-width="1.5"/>
+          <line x1="250" y1="105" x2="550" y2="105" stroke="#ad1823" stroke-width="1.5"/>
+
+          <!-- Broken Branch -->
+          <path d="M400 65 C 400 90, 320 95, 300 125" fill="none" stroke="#ad1823" stroke-width="2" stroke-dasharray="4 4"/>
+          <line x1="332" y1="100" x2="344" y2="112" stroke="#ad1823" stroke-width="2.5"/>
+          <line x1="344" y1="100" x2="332" y2="112" stroke="#ad1823" stroke-width="2.5"/>
+
+          <!-- Mother Node -->
+          <rect x="220" y="125" width="160" height="46" rx="6" fill="#3b0a0e" stroke="#ad1823" stroke-width="1.5"/>
+          <text x="300" y="143" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#ad1823" letter-spacing="1">RISCADA DO LIVRO</text>
+          <text x="300" y="159" text-anchor="middle" font-family="Cinzel" font-size="12" fill="#ffffff" font-weight="700">Elowen Fairstone</text>
+
+          <!-- Father Node -->
+          <rect x="420" y="125" width="160" height="46" rx="6" fill="#1c0b0e" stroke="#d4af37" stroke-width="1.5"/>
+          <text x="500" y="143" text-anchor="middle" font-family="Fira Code" font-size="9" fill="#d4af37" letter-spacing="1">ABORTO</text>
+          <text x="500" y="159" text-anchor="middle" font-family="Cinzel" font-size="12" fill="#ffffff" font-weight="700">Desmond Doyle</text>
+
+          <!-- Union Line -->
+          <line x1="380" y1="148" x2="420" y2="148" stroke="#d4af37" stroke-width="1.5"/>
+          <line x1="360" y1="171" x2="360" y2="210" stroke="#d4af37" stroke-width="1.5"/>
+
+          <!-- Children Line -->
+          <line x1="120" y1="210" x2="600" y2="210" stroke="#d4af37" stroke-width="1.2"/>
+
+          <!-- Children Nodes -->
+          <g font-family="Plus Jakarta Sans" font-size="9.5" fill="#c4b3a3">
+            <line x1="120" y1="210" x2="120" y2="235" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="120" cy="242" r="4" fill="#7a1219"/>
+            <text x="120" y="262" text-anchor="middle" font-weight="600">Wren (19)</text>
+
+            <line x1="216" y1="210" x2="216" y2="235" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="216" cy="242" r="4" fill="#7a1219"/>
+            <text x="216" y="262" text-anchor="middle" font-weight="600">Cass (17)</text>
+
+            <!-- Dash Highlight Node -->
+            <line x1="312" y1="210" x2="312" y2="235" stroke="#f5cf56" stroke-width="2"/>
+            <circle cx="312" cy="242" r="7" fill="#d4af37" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="312" y="265" text-anchor="middle" fill="#f5cf56" font-family="Cinzel" font-size="11" font-weight="900">DASH (13)</text>
+            <text x="312" y="280" text-anchor="middle" fill="#d4af37" font-family="Fira Code" font-size="8">Doyle Fairstone</text>
+
+            <line x1="408" y1="210" x2="408" y2="235" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="408" cy="242" r="4" fill="#7a1219"/>
+            <text x="408" y="262" text-anchor="middle" font-weight="600">Finn (11)</text>
+
+            <line x1="504" y1="210" x2="504" y2="235" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="504" cy="242" r="4" fill="#7a1219"/>
+            <text x="504" y="262" text-anchor="middle" font-weight="600">Ivy (9)</text>
+
+            <line x1="600" y1="210" x2="600" y2="235" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="600" cy="242" r="4" fill="#7a1219"/>
+            <text x="600" y="262" text-anchor="middle" font-weight="600">Mari (4)</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="tree-caption-card">
+        <strong>Nota Histórica:</strong> A linha pontilhada representa o galho cortado no Livro de Linhagem no dia em que Elowen escolheu Desmond. Os seis filhos nasceram do outro lado do corte — reconhecidos pelo sangue registrado em Gringotts, mas ignorados pela aristocracia bruxa de Londres.
+      </div>
+    </div>
+  </section>
+
+  <!-- FAMÍLIA DE VERDADE -->
+  <section id="familia">
+    <div class="section-header">
+      <div class="section-eyebrow">03 · Lar & Aconchego</div>
+      <h2 class="section-title">A Família Doyle em Poeira de Opala</h2>
+      <p class="section-desc">
+        Os oito integrantes de uma casa barulhenta, cheia de poções, criaturas e afeição genuína.
+      </p>
+    </div>
+
+    <div class="family-grid-container">
+      <div class="fam-card">
+        <div class="fam-role">Mãe</div>
+        <div class="fam-name">Elowen Fairstone</div>
+        <div class="fam-desc">Herbologista e botânica exemplar. Trocou a cadeira no Wizengamot por uma estufa em Nova Gales do Sul e nunca disse que se arrependeu.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Pai</div>
+        <div class="fam-name">Desmond Doyle</div>
+        <div class="fam-desc">Aborto, cuida do santuário de criaturas da propriedade. Não lança feitiços, mas é o primeiro a notar quando um Bowtruckle está doente.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Irmã Mais Velha</div>
+        <div class="fam-name">Wren Doyle (19)</div>
+        <div class="fam-desc">Aprendiz de curandeira em Sydney. É quem resolve as brigas — e quem primeiro disse a Dash que ele nasceu com pólvora no sangue.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Irmão Mais Velho</div>
+        <div class="fam-name">Cass Doyle (17)</div>
+        <div class="fam-desc">Último ano em Bellambi. Cauteloso onde Dash é ímpeto — o freio que o irmão do meio nunca ouve a tempo.</div>
+      </div>
+
+      <div class="fam-card active-dash">
+        <div class="fam-role">Ele Mesmo</div>
+        <div class="fam-name">Dash Doyle (13)</div>
+        <div class="fam-desc">O do meio. O que já explicou pro santuário inteiro de criaturas que não vai ficar parado esperando ninguém aprovar nada.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Irmão Mais Novo</div>
+        <div class="fam-name">Finn Doyle (11)</div>
+        <div class="fam-desc">Começa o primeiro ano em Bellambi este ano — sem o irmão do meio por perto pela primeira vez.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Irmã Mais Nova</div>
+        <div class="fam-name">Ivy Doyle (9)</div>
+        <div class="fam-desc">Copia tudo que Dash faz, inclusive os erros. Foi ela quem ajudou a esconder a última caixa de fogos do galpão.</div>
+      </div>
+
+      <div class="fam-card">
+        <div class="fam-role">Caçula</div>
+        <div class="fam-name">Mari Doyle (4)</div>
+        <div class="fam-desc">Chama todo mundo de "meu" — meu Dash, meu Finn. Ele é o único que ela deixa carregar no colo até dormir.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APARÊNCIA E GALERIA (JURAJ SLAFKOVSKY) -->
+  <section id="aparencia">
+    <div class="section-header">
+      <div class="section-eyebrow">04 · Identidade Visual</div>
+      <h2 class="section-title">Aparência Física & Presença</h2>
+      <p class="section-desc">
+        Porte atlético, expressão viva e olhar determinado — representado visualmente por Juraj Slafkovsky.
+      </p>
+    </div>
+
+    <div class="appearance-grid">
+      <div class="gallery-container">
+        <div class="gallery-item featured" onclick="openModal('images/media_1786300878813.jpg')">
+          <img src="images/media_1786300878813.jpg" alt="Dash Doyle - Retrato Principal">
+          <div class="gallery-caption">Apresentação Oficial · Traços marcantes e olhar focado</div>
+        </div>
+        <div class="gallery-item" onclick="openModal('images/media_1786300878716.jpg')">
+          <img src="images/media_1786300878716.jpg" alt="Dash Doyle - Sorriso e Descontração">
+          <div class="gallery-caption">Espírito esportivo & carisma natural</div>
+        </div>
+        <div class="gallery-item" onclick="openModal('images/media_1786300878727.jpg')">
+          <img src="images/media_1786300878727.jpg" alt="Dash Doyle - Estilo Casual">
+          <div class="gallery-caption">Perfil resoluto · Em movimento constante</div>
+        </div>
+      </div>
+
+      <div class="stats-table">
+        <div class="stat-item">
+          <span class="stat-key">Altura</span>
+          <span class="stat-val">1,58 m (Estatura normal para a idade)</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-key">Porte Físico</span>
+          <span class="stat-val">Atlético — ombros largos, sempre em movimento</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-key">Olhos</span>
+          <span class="stat-val">Verdes intensos (herdados de Elowen)</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-key">Cabelo</span>
+          <span class="stat-val">Castanho-escuro, sempre bagunçado</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-key">Marca Registrada</span>
+          <span class="stat-val">Cicatriz de queimadura no antebraço direito</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-key">Aroma Característico</span>
+          <span class="stat-val">Fumaça de fogueira & eucalipto seco</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O QUE ELE CARREGA -->
+  <section id="objetos">
+    <div class="section-header">
+      <div class="section-eyebrow">05 · Equipamento</div>
+      <h2 class="section-title">O que Ele Carrega & Hábitos</h2>
+      <p class="section-desc">
+        A varinha mágica de madeira nativa, relíquias afetivas e aspirações para a vida em Hogwarts.
+      </p>
+    </div>
+
+    <div class="inventory-grid">
+      <div class="inv-card">
+        <div class="inv-icon">
+          <!-- Wand SVG Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M7.5 5.6L5 7l1.4-2.5L5 2l2.5 1.4L10 2 8.6 4.5 10 7 7.5 5.6zm12 9.8l-2.5 1.4 1.4 2.5-2.5-1.4L13.5 20l1.4-2.5-1.4-2.5 2.5 1.4 2.5-1.4zM20 2l-1.5 3L17 3.5l1.4 2.5L17 8.5l2.5-1.4L22 8.5l-1.4-2.5L22 3.5 20 2z"/>
+          </svg>
+        </div>
+        <h3 class="inv-title">Varinha Pessoal</h3>
+        <p class="inv-desc">
+          27,5 cm, madeira de eucalipto-vermelho, núcleo de escama de Dragão-de-Outback. Flexível, quente ao toque quando ele se empolga.
+        </p>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-icon">
+          <!-- Pocket Relic Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/>
+          </svg>
+        </div>
+        <h3 class="inv-title">No Bolso</h3>
+        <p class="inv-desc">
+          Uma lata de fósforos amassada com pavio queimado do incêndio de 2092 (escondida no baú por Ivy) e uma pedra de opala lisa do riacho de casa que ele esfrega quando está nervoso.
+        </p>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-icon">
+          <!-- Broom/Quidditch Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 19h20L12 2zm0 4.83L17.74 16.5H6.26L12 6.83z"/>
+          </svg>
+        </div>
+        <h3 class="inv-title">Campo de Quadribol</h3>
+        <p class="inv-desc">
+          Quer tentar a vaga de <strong>Artilheiro</strong> — precisa estar em movimento, precisa de gente por perto, não aguentaria ficar parado no gol.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- A DESPEDIDA E CARTA FINAL -->
+  <section id="carta" style="border-bottom:none;">
+    <div class="section-header">
+      <div class="section-eyebrow">06 · Admissão Oficial</div>
+      <h2 class="section-title">A Carta de Hogwarts (2099)</h2>
+      <p class="section-desc">
+        A convocação formal emitida sob a tutela do Vínculo de Sangue em Gringotts.
+      </p>
+    </div>
+
+    <div class="letter-box">
+      <div class="letter-kicker">Escola de Magia e Bruxaria de Hogwarts · Diretoria de Admissões</div>
+      <h2 class="letter-title">Prezado Sr. Dashiell Doyle,</h2>
+      <div class="letter-content">
+        <p>
+          Temos o prazer de informar que, mediante os termos do Vínculo de Sangue registrado sob sua linhagem materna em Gringotts, sua transferência para o <strong>terceiro ano letivo (2099–2100)</strong> foi aprovada com base nos resultados obtidos na Academia de Bellambi.
+        </p>
+        <p>
+          Aguardamos sua chegada pelo Expresso de Hogwarts em 1º de setembro de 2099. Traslado internacional providenciado via Chave de Portal, partindo de Sydney.
+        </p>
+      </div>
+      <div class="letter-signature">
+        — Escritório de Admissões, por ordem da Diretoria
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p class="footer-text">
+      Ficha de Personagem RPG · Dashiell Doyle · Universo Harry Potter 2099
+    </p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX MODAL -->
+<div class="modal-overlay" id="image-modal" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modal-img" src="" alt="Ampliação de Foto">
+  </div>
+</div>
+
+<!-- JAVASCRIPT ANIMATION & INTERACTIVES -->
+<script>
+// Spark Canvas Animation
+const canvas = document.getElementById('spark-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+let particles = [];
+
+function initCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+  
+  const count = Math.floor(width * 0.04);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2.2 + 0.6,
+      speedX: (Math.random() - 0.5) * 0.6,
+      speedY: -Math.random() * 0.8 - 0.2,
+      opacity: Math.random() * 0.7 + 0.3,
+      color: Math.random() > 0.4 ? '#d4af37' : '#ad1823'
+    });
+  }
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, width, height);
+
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    
+    if (p.y < 0) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+    if (p.x < 0 || p.x > width) {
+      p.speedX *= -1;
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = p.color;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+
+// Lightbox Modal Functions
+function openModal(src) {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-img');
+  modalImg.src = src;
+  modal.classList.add('active');
+}
+
+function closeModal() {
+  const modal = document.getElementById('image-modal');
+  modal.classList.remove('active');
+}
+
+// ESC Key to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
