@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -146,7 +146,138 @@ html {
   filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
 }
 
-.nav-links {\n  display: flex;\n  align-items: center;\n  gap: 24px;\n  list-style: none;\n}\n\n@media (max-width: 992px) {\n  .nav-links { display: none; }\n}\n\n.nav-links a {\n  font-family: var(--font-ui);\n  font-size: 0.78rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  color: var(--text-muted);\n  text-decoration: none;\n  transition: all 0.3s ease;\n  position: relative;\n  padding: 4px 0;\n}\n\n.nav-links a::after {\n  content: '';\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  width: 0%;\n  height: 2px;\n  background: var(--gold);\n  transition: width 0.3s ease;\n}\n\n.nav-links a:hover {\n  color: var(--gold-bright);\n}\n\n.nav-links a:hover::after {\n  width: 100%;\n}\n\n/* Hamburger Button */\n.nav-hamburger {\n  display: none;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  gap: 5px;\n  width: 40px;\n  height: 40px;\n  background: transparent;\n  border: 1px solid var(--border-gold);\n  border-radius: 6px;\n  cursor: pointer;\n  z-index: 200;\n  padding: 8px 6px;\n  transition: border-color 0.2s;\n}\n.nav-hamburger:hover { border-color: var(--gold); }\n.nav-hamburger span {\n  display: block;\n  width: 22px;\n  height: 2px;\n  background: var(--gold);\n  border-radius: 2px;\n  transition: all 0.3s ease;\n  transform-origin: center;\n}\n.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }\n.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }\n.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }\n\n@media (max-width: 992px) {\n  .nav-hamburger { display: flex; }\n}\n\n/* Mobile Overlay */\n.nav-overlay {\n  display: none;\n  position: fixed;\n  inset: 0;\n  background: rgba(0,0,0,0.6);\n  z-index: 150;\n  backdrop-filter: blur(4px);\n}\n.nav-overlay.open { display: block; }\n\n/* Mobile Drawer */\n.nav-drawer {\n  position: fixed;\n  top: 0;\n  right: 0;\n  width: min(300px, 85vw);\n  height: 100vh;\n  background: rgba(17, 7, 8, 0.98);\n  border-left: 1px solid var(--border-gold);\n  box-shadow: -10px 0 40px rgba(0,0,0,0.8);\n  z-index: 160;\n  transform: translateX(100%);\n  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 80px 30px 40px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n.nav-drawer.open { transform: translateX(0); }\n\n.nav-drawer a {\n  display: block;\n  font-family: var(--font-title);\n  font-size: 1rem;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  color: var(--text-muted);\n  text-decoration: none;\n  padding: 12px 0;\n  border-bottom: 1px solid rgba(212, 175, 55, 0.08);\n  transition: color 0.2s, padding-left 0.2s;\n}\n.nav-drawer a:last-child { border-bottom: none; }\n.nav-drawer a:hover { color: var(--gold-bright); padding-left: 6px; }\n.nav-drawer a.active { color: var(--gold-bright); }\n\n.nav-drawer-brand {\n  position: absolute;\n  top: 20px;\n  left: 30px;\n  font-family: var(--font-title);\n  font-size: 1rem;\n  font-weight: 700;\n  color: var(--gold-bright);\n  letter-spacing: 0.05em;\n}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--gold-bright); }
+.nav-links a:hover::after { width: 100%; }
+
+/* Hamburger Button */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 200;
+  padding: 8px 6px;
+  transition: border-color 0.2s;
+}
+.nav-hamburger:hover { border-color: var(--gold); }
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 992px) {
+  .nav-hamburger { display: flex; }
+}
+
+/* Mobile Overlay */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 150;
+  backdrop-filter: blur(4px);
+}
+.nav-overlay.open { display: block; }
+
+/* Mobile Drawer */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(300px, 85vw);
+  height: 100vh;
+  background: rgba(17, 7, 8, 0.98);
+  border-left: 1px solid var(--border-gold);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+  z-index: 160;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 80px 30px 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nav-drawer.open { transform: translateX(0); }
+
+.nav-drawer a {
+  display: block;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.nav-drawer a:last-child { border-bottom: none; }
+.nav-drawer a:hover { color: var(--gold-bright); padding-left: 6px; }
+.nav-drawer a.active { color: var(--gold-bright); }
+
+.nav-drawer-brand {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.05em;
+}
 
 /* HERO SECTION */
 .hero {
