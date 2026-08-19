@@ -714,6 +714,16 @@ async function loadTales() {
   }
 }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function renderTales() {
   const container = document.getElementById('tales-container');
   const empty = document.getElementById('empty-state');
@@ -730,22 +740,22 @@ function renderTales() {
       
       const snippet = getSnippet(tale.conteudo, 260);
       
-      // Render Tags
+      // Render Tags safely
       let tagsHTML = '';
       if (tale.tags && Array.isArray(tale.tags)) {
         tale.tags.forEach(t => {
           if (t.trim()) {
-            tagsHTML += `<span class="tale-tag">#${t.trim()}</span>`;
+            tagsHTML += `<span class="tale-tag">#${escapeHTML(t.trim())}</span>`;
           }
         });
       }
       
       card.innerHTML = `
         <div class="tale-meta">
-          <span class="tale-date">${tale.formattedDate}</span>
+          <span class="tale-date">${escapeHTML(tale.formattedDate)}</span>
           <div class="tale-tags-group">${tagsHTML}</div>
         </div>
-        <h3 class="tale-title">${tale.titulo}</h3>
+        <h3 class="tale-title">${escapeHTML(tale.titulo)}</h3>
         <p class="tale-snippet">${snippet}</p>
         <button class="read-tale-btn" onclick="showTale('${tale.id}')">
           Ler conto
@@ -759,8 +769,7 @@ function renderTales() {
 
 function getSnippet(text, length) {
   if (!text) return '';
-  // Strip simple HTML tags if any
-  let plain = text.replace(/<[^>]*>/g, '');
+  let plain = escapeHTML(text);
   if (plain.length <= length) return plain;
   return plain.substring(0, length) + '...';
 }
@@ -778,9 +787,9 @@ window.showTale = function(id) {
   document.getElementById('single-title').innerText = tale.titulo;
   document.getElementById('single-date').innerText = tale.formattedDate;
   
-  // Format content paragraphs
+  // Format content paragraphs safely escaping text
   const paragraphs = tale.conteudo.split('\n\n').filter(p => p.trim());
-  const contentHTML = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  const contentHTML = paragraphs.map(p => `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`).join('');
   document.getElementById('single-content').innerHTML = contentHTML;
   
   // Render Tags in single view

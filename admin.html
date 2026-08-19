@@ -724,9 +724,23 @@ window.resetTaleForm = function() {
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('tale-date').value = today;
 
+// HTML Escaper to prevent XSS
+function escapeHTML(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // Setup Live lists
 let spellsUnsubscribe = null;
 let talesUnsubscribe = null;
+
+const spellsMap = {};
+const talesMap = {};
 
 function setupLiveLists() {
   if (spellsUnsubscribe) spellsUnsubscribe();
@@ -746,19 +760,20 @@ function setupLiveLists() {
     
     snapshot.forEach(docSnap => {
       const spell = { id: docSnap.id, ...docSnap.data() };
+      spellsMap[spell.id] = spell;
       const itemDiv = document.createElement('div');
       itemDiv.className = 'list-item';
       
       itemDiv.innerHTML = `
         <div class="list-item-info">
-          <div class="list-item-title">${spell.nome}</div>
-          <div class="list-item-meta">${spell.categoria}</div>
+          <div class="list-item-title">${escapeHTML(spell.nome)}</div>
+          <div class="list-item-meta">${escapeHTML(spell.categoria)}</div>
         </div>
         <div class="list-item-actions">
-          <button class="action-btn edit-btn" onclick="editSpell('${spell.id}', '${escapeJS(spell.nome)}', '${escapeJS(spell.categoria)}', '${escapeJS(spell.efeito)}')" title="Editar">
+          <button class="action-btn edit-btn" onclick="editSpell('${spell.id}')" title="Editar">
             <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
           </button>
-          <button class="action-btn delete-btn" onclick="deleteSpell('${spell.id}', '${escapeJS(spell.nome)}')" title="Excluir">
+          <button class="action-btn delete-btn" onclick="deleteSpell('${spell.id}')" title="Excluir">
             <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
           </button>
         </div>
@@ -778,14 +793,13 @@ function setupLiveLists() {
     
     snapshot.forEach(docSnap => {
       const tale = { id: docSnap.id, ...docSnap.data() };
+      talesMap[tale.id] = tale;
       
       // Format date for list view
       let formattedDate = "";
-      let isoDate = "";
       if (tale.dataPublicacao) {
         const d = tale.dataPublicacao.toDate();
         formattedDate = d.toLocaleDateString('pt-BR');
-        isoDate = d.toISOString().split('T')[0];
       }
       
       const itemDiv = document.createElement('div');
@@ -793,14 +807,14 @@ function setupLiveLists() {
       
       itemDiv.innerHTML = `
         <div class="list-item-info">
-          <div class="list-item-title">${tale.titulo}</div>
+          <div class="list-item-title">${escapeHTML(tale.titulo)}</div>
           <div class="list-item-meta">Publicado em ${formattedDate}</div>
         </div>
         <div class="list-item-actions">
-          <button class="action-btn edit-btn" onclick="editTale('${tale.id}', '${escapeJS(tale.titulo)}', '${isoDate}', '${escapeJS((tale.tags || []).join(','))}', '${escapeJS(tale.conteudo)}')" title="Editar">
+          <button class="action-btn edit-btn" onclick="editTale('${tale.id}')" title="Editar">
             <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
           </button>
-          <button class="action-btn delete-btn" onclick="deleteTale('${tale.id}', '${escapeJS(tale.titulo)}')" title="Excluir">
+          <button class="action-btn delete-btn" onclick="deleteTale('${tale.id}')" title="Excluir">
             <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
           </button>
         </div>
@@ -811,11 +825,13 @@ function setupLiveLists() {
 }
 
 // Global actions exposed to window
-window.editSpell = function(id, nome, categoria, efeito) {
+window.editSpell = function(id) {
+  const spell = spellsMap[id];
+  if (!spell) return;
   document.getElementById('spell-id').value = id;
-  document.getElementById('spell-name').value = unescapeJS(nome);
-  document.getElementById('spell-category').value = unescapeJS(categoria);
-  document.getElementById('spell-effect').value = unescapeJS(efeito);
+  document.getElementById('spell-name').value = spell.nome;
+  document.getElementById('spell-category').value = spell.categoria;
+  document.getElementById('spell-effect').value = spell.efeito;
   
   document.getElementById('spell-form-title').innerText = 'Editar Feitiço';
   document.getElementById('spell-cancel-btn').style.display = 'block';
@@ -824,8 +840,10 @@ window.editSpell = function(id, nome, categoria, efeito) {
   document.getElementById('spell-form').scrollIntoView({ behavior: 'smooth' });
 };
 
-window.deleteSpell = async function(id, nome) {
-  if (confirm(`Tem certeza que deseja excluir o feitiço "${unescapeJS(nome)}"?`)) {
+window.deleteSpell = async function(id) {
+  const spell = spellsMap[id];
+  if (!spell) return;
+  if (confirm(`Tem certeza que deseja excluir o feitiço "${spell.nome}"?`)) {
     try {
       await deleteDoc(doc(db, "feiticos", id));
       if (document.getElementById('spell-id').value === id) resetSpellForm();
@@ -836,12 +854,21 @@ window.deleteSpell = async function(id, nome) {
   }
 };
 
-window.editTale = function(id, titulo, dateStr, tags, conteudo) {
+window.editTale = function(id) {
+  const tale = talesMap[id];
+  if (!tale) return;
+  
   document.getElementById('tale-id').value = id;
-  document.getElementById('tale-title').value = unescapeJS(titulo);
-  document.getElementById('tale-date').value = dateStr;
-  document.getElementById('tale-tags').value = unescapeJS(tags);
-  document.getElementById('tale-content').value = unescapeJS(conteudo);
+  document.getElementById('tale-title').value = tale.titulo;
+  
+  let isoDate = "";
+  if (tale.dataPublicacao) {
+    const d = tale.dataPublicacao.toDate();
+    isoDate = d.toISOString().split('T')[0];
+  }
+  document.getElementById('tale-date').value = isoDate;
+  document.getElementById('tale-tags').value = (tale.tags || []).join(', ');
+  document.getElementById('tale-content').value = tale.conteudo;
   
   document.getElementById('tale-form-title').innerText = 'Editar Narrativa';
   document.getElementById('tale-cancel-btn').style.display = 'block';
@@ -850,8 +877,10 @@ window.editTale = function(id, titulo, dateStr, tags, conteudo) {
   document.getElementById('tale-form').scrollIntoView({ behavior: 'smooth' });
 };
 
-window.deleteTale = async function(id, titulo) {
-  if (confirm(`Tem certeza que deseja excluir o conto "${unescapeJS(titulo)}"?`)) {
+window.deleteTale = async function(id) {
+  const tale = talesMap[id];
+  if (!tale) return;
+  if (confirm(`Tem certeza que deseja excluir o conto "${tale.titulo}"?`)) {
     try {
       await deleteDoc(doc(db, "contos", id));
       if (document.getElementById('tale-id').value === id) resetTaleForm();
@@ -861,27 +890,6 @@ window.deleteTale = async function(id, titulo) {
     }
   }
 };
-
-// Escape utilities for onclick attributes
-function escapeJS(str) {
-  if (!str) return '';
-  return str
-    .replace(/\\/g, '\\\\')
-    .replace(/'/g, "\\'")
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r');
-}
-
-function unescapeJS(str) {
-  if (!str) return '';
-  return str
-    .replace(/\\n/g, '\n')
-    .replace(/\\r/g, '\r')
-    .replace(/\\'/g, "'")
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, '\\');
-}
 </script>
 
 </body>

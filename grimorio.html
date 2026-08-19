@@ -699,7 +699,7 @@ function renderSpells() {
   
   const filtered = allSpells.filter(spell => {
     const matchesCategory = (currentCategory === "Todos" || spell.categoria === currentCategory);
-    const matchesSearch = (spell.nome.toLowerCase().includes(searchText) || spell.efeito.toLowerCase().includes(searchText));
+    const matchesSearch = (spell.nome.toLowerCase().includes(searchText) || (spell.efeito || '').toLowerCase().includes(searchText));
     return matchesCategory && matchesSearch;
   });
   
@@ -708,20 +708,30 @@ function renderSpells() {
   } else {
     empty.style.display = 'none';
     filtered.forEach(spell => {
+      // Build card entirely via DOM methods — no innerHTML with user data
       const card = document.createElement('div');
       card.className = 'spell-card';
-      
-      // Matéria mapping to beautiful tags
-      let tagLabel = spell.categoria;
-      if (spell.categoria === "DCAT") tagLabel = "D.C.A.T.";
-      
-      card.innerHTML = `
-        <div class="spell-header">
-          <h3 class="spell-name">${spell.nome}</h3>
-          <span class="spell-category-tag">${tagLabel}</span>
-        </div>
-        <p class="spell-desc">${spell.efeito}</p>
-      `;
+
+      const header = document.createElement('div');
+      header.className = 'spell-header';
+
+      const nameEl = document.createElement('h3');
+      nameEl.className = 'spell-name';
+      nameEl.textContent = spell.nome;
+
+      const tagEl = document.createElement('span');
+      tagEl.className = 'spell-category-tag';
+      tagEl.textContent = (spell.categoria === "DCAT") ? "D.C.A.T." : (spell.categoria || '');
+
+      header.appendChild(nameEl);
+      header.appendChild(tagEl);
+
+      const descEl = document.createElement('p');
+      descEl.className = 'spell-desc';
+      descEl.textContent = spell.efeito || '';
+
+      card.appendChild(header);
+      card.appendChild(descEl);
       container.appendChild(card);
     });
   }
