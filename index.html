@@ -518,6 +518,60 @@ section {
   border-top: 1px solid var(--parchment-border);
 }
 
+/* STORY TRUNCATE / EXPAND */
+.story-text-body.is-collapsed {
+  max-height: 360px;
+  overflow: hidden;
+  position: relative;
+}
+
+.story-text-body.is-collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--parchment-bg));
+  pointer-events: none;
+}
+
+.story-read-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto 0;
+  background: transparent;
+  border: 1.5px solid var(--parchment-border);
+  color: var(--crimson);
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 10px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.story-read-more-btn:hover {
+  background: rgba(173, 24, 35, 0.1);
+  border-color: var(--crimson);
+  color: var(--crimson-bright);
+}
+
+.story-read-more-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.story-read-more-btn.expanded svg {
+  transform: rotate(180deg);
+}
+
 /* FAMILY TREE SECTION */
 .tree-box {
   background: var(--bg-card);
@@ -744,6 +798,817 @@ footer {
   transform: scale(1.1);
   background: var(--crimson-bright);
 }
+
+/* ==========================================================================
+   RPG CHARACTER SHEET & INVENTORY SECTION STYLES
+   ========================================================================== */
+
+.rpg-sheet-frame {
+  background: linear-gradient(145deg, #18090b 0%, #100607 60%, #1a080c 100%);
+  border: 2px solid var(--gold-dark);
+  border-radius: 12px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(59, 10, 14, 0.5);
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+/* Ornate Corner Decors */
+.rpg-frame-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.corner-tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.corner-tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+.corner-br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+.rpg-frame-corner::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px var(--gold-bright);
+}
+.corner-tl::after { top: 2px; left: 2px; }
+.corner-tr::after { top: 2px; right: 2px; }
+.corner-bl::after { bottom: 2px; left: 2px; }
+.corner-br::after { bottom: 2px; right: 2px; }
+
+/* RPG Main Header Layout */
+.rpg-profile-header {
+  display: grid;
+  grid-template-columns: 240px 1fr 240px;
+  gap: 30px;
+  align-items: center;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+  .rpg-profile-header {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 24px;
+  }
+}
+
+/* Left Column: Avatar & Ability Badge */
+.rpg-avatar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.rpg-avatar-ring {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(135deg, var(--gold-bright), var(--crimson), var(--gold-dark));
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rpg-avatar-ring:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.6);
+}
+
+.rpg-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid #110708;
+  display: block;
+}
+
+.rpg-level-badge {
+  position: absolute;
+  bottom: -4px;
+  right: 6px;
+  background: radial-gradient(circle, #2a0b10 0%, #120406 100%);
+  border: 2px solid var(--gold-bright);
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.dragon-blood-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, rgba(122, 18, 25, 0.6) 0%, rgba(59, 10, 14, 0.8) 100%);
+  border: 1px solid var(--gold);
+  border-radius: 30px;
+  padding: 8px 18px;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 15px rgba(173, 24, 35, 0.35);
+  animation: dragonPulse 3s infinite ease-in-out;
+}
+
+@keyframes dragonPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(173, 24, 35, 0.3); }
+  50% { box-shadow: 0 0 24px rgba(212, 175, 55, 0.45); }
+}
+
+.dragon-blood-badge svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--gold);
+}
+
+/* Center Column: Core Character Info & Progress Bars */
+.rpg-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rpg-char-name {
+  font-family: var(--font-decorative);
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.rpg-char-title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.rpg-details-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .rpg-details-pills { justify-content: center; }
+}
+
+.rpg-pill {
+  background: rgba(30, 10, 14, 0.8);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rpg-pill strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.rpg-pill.house-pill {
+  border-color: var(--crimson-bright);
+  background: rgba(122, 18, 25, 0.4);
+  color: var(--gold-bright);
+}
+
+/* Progress Bars (HP & XP) */
+.rpg-bars-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.rpg-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rpg-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.rpg-bar-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rpg-bar-fill-hp {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #7a1219, #ad1823, #d4af37);
+  box-shadow: 0 0 10px rgba(173, 24, 35, 0.8);
+}
+
+.rpg-bar-fill-xp {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #8c6d23, #d4af37, #f5cf56);
+  box-shadow: 0 0 12px rgba(245, 207, 86, 0.6);
+  position: relative;
+}
+
+.rpg-bar-fill-xp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmerXP 2.5s infinite;
+}
+
+@keyframes shimmerXP {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Right Column: Currency Vault & Level Shield */
+.rpg-vault-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.vault-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.coins-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 220px;
+}
+
+.coin-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(20, 8, 10, 0.85);
+  border-radius: 25px;
+  border: 1px solid var(--border-gold);
+  transition: all 0.2s ease;
+}
+
+.coin-chip:hover {
+  transform: translateX(4px);
+  border-color: var(--gold);
+  background: rgba(40, 12, 16, 0.9);
+}
+
+.coin-visual {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-disk {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: 0.85rem;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.6);
+  border: 1.5px solid rgba(0,0,0,0.3);
+}
+
+.coin-gold {
+  background: radial-gradient(circle, #f9df7b 0%, #d4af37 60%, #8c6d23 100%);
+  color: #422d00;
+}
+
+.coin-silver {
+  background: radial-gradient(circle, #f0f0f0 0%, #c0c0c0 60%, #7a7a7a 100%);
+  color: #222;
+}
+
+.coin-bronze {
+  background: radial-gradient(circle, #d98a53 0%, #b8622c 60%, #612d0e 100%);
+  color: #2b1103;
+}
+
+.coin-label {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.coin-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+/* ==========================================================================
+   RPG ATTRIBUTES SECTION
+   ========================================================================== */
+
+.rpg-attributes-block {
+  margin-bottom: 35px;
+}
+
+.rpg-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .rpg-stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .rpg-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  background: rgba(25, 9, 12, 0.7);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  background: rgba(45, 12, 16, 0.85);
+}
+
+.stat-card.stat-highlight {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, rgba(59, 10, 14, 0.9) 0%, rgba(30, 8, 10, 0.9) 100%);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+.stat-icon {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--gold);
+}
+
+.stat-name {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-family: var(--font-title);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.stat-card.stat-highlight .stat-value {
+  color: var(--gold-bright);
+  text-shadow: 0 0 12px rgba(245, 207, 86, 0.6);
+}
+
+.stat-sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   INVENTORY TABS & ITEMS GRID
+   ========================================================================== */
+
+.inv-section-title {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 10px;
+}
+
+.inv-tabs-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+
+.inv-tab-btn {
+  background: rgba(25, 9, 12, 0.7);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 10px 18px;
+  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.inv-tab-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.inv-tab-btn:hover {
+  color: #ffffff;
+  border-color: var(--gold);
+  background: rgba(59, 10, 14, 0.8);
+}
+
+.inv-tab-btn.active {
+  color: #110708;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+  border-color: var(--gold-bright);
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+}
+
+.inv-tab-btn.active svg {
+  fill: #110708;
+}
+
+/* Tab Panels */
+.inv-tab-panel {
+  display: none;
+  animation: fadeInPanel 0.3s ease;
+}
+
+.inv-tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeInPanel {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Items Grid */
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.item-card {
+  background: rgba(22, 8, 10, 0.8);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.item-card:hover {
+  border-color: var(--gold);
+  background: rgba(38, 12, 16, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.item-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(59, 10, 14, 0.6);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-icon-box svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--gold);
+}
+
+.item-card.is-wand .item-icon-box {
+  background: radial-gradient(circle, #7a1219, #2b0b10);
+  border-color: var(--gold-bright);
+}
+
+.item-card.is-wand .item-icon-box svg {
+  fill: var(--gold-bright);
+  filter: drop-shadow(0 0 6px var(--gold-bright));
+}
+
+.item-title-group {
+  flex-grow: 1;
+}
+
+.item-type-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2px;
+}
+
+.item-name {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.item-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  padding-top: 10px;
+  margin-top: auto;
+}
+
+.item-qty {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.item-qty strong {
+  color: var(--gold);
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-info-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item-info-btn:hover {
+  background: var(--gold);
+  color: #110708;
+  border-color: var(--gold-bright);
+}
+
+.item-use-btn {
+  background: linear-gradient(135deg, #7a1219, #a81c24);
+  border: 1px solid var(--gold);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.item-use-btn:hover {
+  background: linear-gradient(135deg, #a81c24, #d4af37);
+  color: #110708;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.item-use-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #333;
+  border-color: #555;
+  color: #888;
+}
+
+.uses-counter-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--amber);
+}
+
+/* Empty State Box for Other Tabs */
+.inv-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(20, 7, 9, 0.5);
+  border: 1px dashed var(--border-gold);
+  border-radius: 8px;
+}
+
+.inv-empty-state svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--gold-dark);
+  margin-bottom: 12px;
+}
+
+.inv-empty-title {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.inv-empty-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Transfer Tab Styling */
+.transfer-panel-box {
+  background: rgba(20, 8, 10, 0.7);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.transfer-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.transfer-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.transfer-input, .transfer-select {
+  background: rgba(10, 4, 5, 0.85);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.transfer-input:focus, .transfer-select:focus {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.transfer-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--crimson-bright), var(--gold-dark));
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.transfer-submit-btn:hover {
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #110708;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* Toast Notification */
+.rpg-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(25, 9, 12, 0.95);
+  border: 1px solid var(--gold);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 14px 22px;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.rpg-toast.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.rpg-toast svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--gold);
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -766,6 +1631,8 @@ footer {
     <ul class="nav-links">
       <li><a href="#inicio">Início</a></li>
       <li><a href="#historia">História</a></li>
+      <li><a href="#sangue-draconiano">Sangue Draconiano</a></li>
+      <li><a href="ficha.html" style="color:var(--gold-bright); font-weight:700;">Ficha RPG ↗</a></li>
       <li><a href="#linhagem">Linhagem</a></li>
       <li><a href="#familia">Família</a></li>
       <li><a href="#carta">Carta</a></li>
@@ -842,7 +1709,7 @@ footer {
         <div class="scroll-subtitle">de Poeira de Opala até o Expresso de Hogwarts — 2099</div>
       </div>
 
-      <div class="story-text-body">
+      <div class="story-text-body is-collapsed" id="story-body">
         <p>Elowen Fairstone tinha vinte e dois anos quando decidiu que amava mais o homem que não conseguia ver o próprio feitiço de aquecimento funcionar do que a cadeira que a esperava, um dia, entre os Fairstone reconhecidos do Wizengamot. Desmond Doyle era aborto, nascido numa família de bruxos que nunca soube o que fazer com um filho sem magia, e trabalhava, quando os dois se conheceram, cuidando dos animais, mágicos e comuns, de uma propriedade vizinha à mansão da família dela. Ninguém em nenhuma das duas famílias os apoiou. Os Fairstone fizeram o que os Fairstone sempre fizeram quando algo ameaçava o nome: riscaram Elowen do Livro de Linhagem, formalmente, numa cerimônia fechada, sem gritos, só assinaturas. O que eles não sabiam, ou fingiram não saber, é que um vínculo de sangue muito mais antigo que qualquer cerimônia de família, registrado havia gerações em Gringotts, não podia ser desfeito por uma assinatura. Elowen deixaria de ser reconhecida. Ela nunca deixaria de ser, legalmente, uma Fairstone. E os filhos que tivesse carregariam o nome com ela, quisesse a família ou não.</p>
 
         <p>Os dois atravessaram meio mundo pra recomeçar longe da vergonha alheia. Compraram, com o pouco que restou da herança de Elowen antes do corte, uma propriedade seca e bonita no interior de Nova Gales do Sul, num vilarejo de garimpeiros de opala que mal aparecia nos mapas. Ali, entre eucaliptos e cercas sempre precisando de reparo, os dois construíram uma vida que não parecia nada com a que qualquer um deles tinha imaginado, mas que, com o tempo, os dois passaram a preferir. Vieram os filhos, um atrás do outro: Wren primeiro, depois Cass, depois, em 2086, Dashiell, o filho do meio, embora ninguém tivesse planejado que ele fosse ficar exatamente no centro de tudo. Depois dele vieram Finn, Ivy e, por fim, a pequena Mari. Seis crianças crescendo soltas entre potes de poção na cozinha da mãe e o santuário improvisado de criaturas feridas que o pai mantinha nos fundos, com Bowtruckles de asas quebradas, Nifflers resgatados de armadilhas de garimpeiro e até um dragão-de-outback jovem demais pra voltar sozinho pro deserto.</p>
@@ -860,8 +1727,67 @@ footer {
         <p>Ele segurou a Chave de Portal, uma lata de biscoitos velha e amassada, junto com os outros passageiros, sentiu o puxão familiar no umbigo, e quando abriu os olhos de novo, o ar já não cheirava a eucalipto: ele estava no coração do Beco Diagonal. À sua frente erguiam-se vitrines mágicas de caldeirões, vassouras e corujas, a arquitetura antiga de pedra e a agitação dos bruxos de Londres. Ele passaria uma semana inteira ali explorando as alamedas e fazendo suas compras antes do embarque oficial no Expresso de Hogwarts. Treze anos, o nome de uma família que nunca o recebeu gravado nos próprios pertences, uma cicatriz no braço, uma pedra de opala no bolso e o Beco Diagonal inteiro pela frente. Qualquer que fosse a casa que o Chapéu Seletor escolhesse ao final daquela semana, ele já tinha decidido, muito antes de chegar, que ia entrar nela sendo exatamente quem sempre foi.</p>
       </div>
 
-      <div class="scroll-footer-mark">
+      <button class="story-read-more-btn" id="story-toggle-btn" onclick="toggleStory()">
+        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        Continuar lendo
+      </button>
+
+      <div class="scroll-footer-mark" id="story-footer" style="display:none;">
         ✦ Documento Registrado no Ano Mágico de 2099 ✦
+      </div>
+    </div>
+  </section>
+
+  <!-- SANGUE DRACONIANO -->
+  <section id="sangue-draconiano">
+    <div class="section-header">
+      <div class="section-eyebrow">01.5 · Herança & Habilidade</div>
+      <h2 class="section-title">Sangue Draconiano</h2>
+      <p class="section-desc">
+        A herança ancestral adormecida que começou a despertar em Dashiell ao chegar a Hogwarts.
+      </p>
+    </div>
+
+    <div class="story-scroll-container">
+      <div class="wax-seal" title="Sangue Draconiano">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+      </div>
+
+      <div class="scroll-header">
+        <div class="scroll-kicker">Habilidade Inata · Sangue Draconiano</div>
+        <h2 class="scroll-title">O Sangue que Dormia</h2>
+        <div class="scroll-subtitle">A herança dos Doyle — gerações de silêncio e fogo</div>
+      </div>
+
+      <div class="story-text-body is-collapsed" id="dragon-body">
+        <p>Muito antes de Dashiell Doyle nascer, a família de seu pai já carregava uma herança que poucos conheciam. Não era algo registrado nos nomes da família, nem uma linhagem da qual se orgulhassem abertamente. Gerações atrás, uma ancestral dos Doyle havia desenvolvido uma afinidade incomum com dragões. Ela conseguia permanecer próxima dessas criaturas sem despertar sua agressividade, compreendia seus comportamentos com uma facilidade que nenhum outro bruxo possuía e, em certas ocasiões, parecia até ser reconhecida por elas. O dom passou de geração em geração, mas nunca se manifestava da mesma maneira. Em alguns descendentes, surgia apenas como uma resistência incomum ao calor; em outros, como uma estranha capacidade de acalmar criaturas mágicas. Às vezes, simplesmente desaparecia por uma geração inteira. Com o passar dos anos, os Doyle deixaram de compreender o que aquilo realmente significava.</p>
+
+        <p>Quando Desmond Doyle nasceu, ninguém esperava que a antiga herança continuasse através dele. Desmond não demonstrou magia durante a infância e, conforme os anos passaram, ficou claro para sua família que ele era um aborto. Para eles, aquilo significava que a linhagem havia chegado ao fim. O sangue mágico que existia em seus antepassados não parecia ter deixado nada nele. Desmond cresceu carregando o peso de ser o filho que não correspondia às expectativas da própria família, até que encontrou outro caminho longe deles. Trabalhando com animais mágicos e comuns, descobriu que tinha uma habilidade natural para lidar com criaturas difíceis. Animais assustados pareciam se acalmar perto dele, criaturas agressivas demoravam mais para atacá-lo e, mesmo sem possuir magia, Desmond parecia compreender instintivamente quando uma criatura estava com medo, ferida ou simplesmente queria ser deixada em paz.</p>
+
+        <p>Foi somente muitos anos depois que ele teve contato com um dragão. Era um jovem dragão-de-outback encontrado ferido e incapaz de retornar ao deserto. Desmond foi encarregado de ajudar nos cuidados da criatura, esperando que o trabalho fosse tão perigoso quanto qualquer outra pessoa esperaria. O dragão, entretanto, nunca reagiu a ele como deveria. Não tentou atacá-lo, não se agitou quando Desmond se aproximava e permitiu que ele tratasse seus ferimentos. Desmond atribuiu aquilo à sua experiência com animais. Nunca imaginou que o dragão reconhecia algo nele que nem mesmo ele conhecia.</p>
+
+        <p>Foi depois disso que Desmond conheceu Elowen Fairstone. Os dois construíram uma vida juntos longe das famílias que os haviam rejeitado e, algum tempo depois, começaram a ter filhos. Wren nasceu primeiro, depois Cass e, em 2086, Dashiell. Nenhum dos filhos parecia carregar qualquer sinal evidente daquela antiga herança. Até Dashiell começar a manifestar magia de maneira completamente diferente das outras crianças.</p>
+
+        <p>Desde pequeno, Dash parecia ter uma relação peculiar com fogo e criaturas mágicas. Sua magia acidental era frequentemente acompanhada por calor, fumaça ou pequenas explosões. Aos três anos, transformou um jarro de essência de dragão-de-outback em uma nuvem de fumaça colorida durante uma birra. Aos seis, incendiou o galpão tentando reproduzir fogos de artifício. Para a família, eram apenas mais algumas das muitas confusões causadas por uma criança incapaz de ficar parada. Desmond, porém, começou a perceber pequenas coisas que ninguém mais parecia notar. O modo como Dash se aproximava das criaturas no santuário. A ausência quase completa de medo diante de animais que fariam outras crianças recuarem. A maneira como certos animais permaneciam tranquilos quando ele estava por perto.</p>
+
+        <p>Ainda assim, Desmond nunca contou ao filho sobre a antiga herança dos Doyle. Ele próprio não tinha certeza do que realmente carregava no sangue e, depois de passar a vida sendo tratado como alguém que não possuía magia, não queria que Dashiell crescesse acreditando que precisava ser especial por possuir alguma coisa que os outros não tinham. Para Desmond, Dash deveria simplesmente ser Dash. Um garoto barulhento, curioso, impulsivo e capaz de incendiar um galpão antes mesmo do café da manhã.</p>
+
+        <p>A verdade permaneceu escondida enquanto Dashiell crescia em Poeira de Opala. Quando chegou a Hogwarts, entretanto, a distância de casa e o contato com criaturas mágicas diferentes começaram a despertar algo que havia permanecido adormecido por gerações. Primeiro vieram os sonhos. Dashiell começou a sonhar com criaturas enormes voando sobre paisagens desconhecidas, montanhas cobertas por fumaça e olhos dourados observando-o de muito perto. Algumas noites acordava com a estranha certeza de que havia alguém — ou alguma coisa — presente no quarto. Em outras, acordava sentindo calor mesmo quando o ambiente estava frio.</p>
+
+        <p>Depois vieram as sensações. Às vezes, antes mesmo de saber que havia uma criatura mágica próxima, Dash sentia sua presença. Não era exatamente medo. Era uma espécie de reconhecimento instintivo, como se uma parte dele soubesse que havia algo ali antes que seus olhos pudessem confirmar. Quanto mais próximo ficava de criaturas dracônicas, mais forte essa sensação se tornava.</p>
+
+        <p>A herança dos Doyle finalmente estava despertando.</p>
+      </div>
+
+      <button class="story-read-more-btn" id="dragon-toggle-btn" onclick="toggleDragon()">
+        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        Continuar lendo
+      </button>
+
+      <div class="scroll-footer-mark" id="dragon-footer" style="display:none;">
+        ✦ Herança Registrada sob o Vínculo de Sangue Draconiano ✦
       </div>
     </div>
   </section>
@@ -1130,6 +2056,46 @@ function closeModal() {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
+
+// Toggle Collapsible Story Sections
+function toggleStory() {
+  const body = document.getElementById('story-body');
+  const btn = document.getElementById('story-toggle-btn');
+  const footer = document.getElementById('story-footer');
+  const isCollapsed = body.classList.contains('is-collapsed');
+
+  if (isCollapsed) {
+    body.classList.remove('is-collapsed');
+    btn.classList.add('expanded');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg> Recolher';
+    footer.style.display = 'block';
+  } else {
+    body.classList.add('is-collapsed');
+    btn.classList.remove('expanded');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg> Continuar lendo';
+    footer.style.display = 'none';
+  }
+}
+
+function toggleDragon() {
+  const body = document.getElementById('dragon-body');
+  const btn = document.getElementById('dragon-toggle-btn');
+  const footer = document.getElementById('dragon-footer');
+  const isCollapsed = body.classList.contains('is-collapsed');
+
+  if (isCollapsed) {
+    body.classList.remove('is-collapsed');
+    btn.classList.add('expanded');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg> Recolher';
+    footer.style.display = 'block';
+  } else {
+    body.classList.add('is-collapsed');
+    btn.classList.remove('expanded');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg> Continuar lendo';
+    footer.style.display = 'none';
+  }
+}
+
 </script>
 </body>
 </html>

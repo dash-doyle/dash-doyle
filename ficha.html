@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashiell Doyle — Ficha de Personagem (Hogwarts 2099)</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Gryffindor Palette - Deep Crimson, Gold & Amber */
+  --bg-dark: #110708;
+  --bg-card: #1c0b0e;
+  --bg-card-hover: #2a1014;
+  --crimson-dark: #3b0a0e;
+  --crimson: #7a1219;
+  --crimson-bright: #ad1823;
+  --gold-dark: #8c6d23;
+  --gold: #d4af37;
+  --gold-bright: #f5cf56;
+  --amber: #e67e22;
+  --parchment-bg: #f4ebd0;
+  --parchment-border: #d4c59a;
+  --parchment-text: #1f140e;
+  --text-main: #f5ebdf;
+  --text-muted: #c4b3a3;
+  --text-dim: #8a7667;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --border-crimson: rgba(173, 24, 35, 0.3);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.15);
+  --shadow-crimson: 0 0 30px rgba(122, 18, 25, 0.4);
+  --font-title: 'Cinzel', serif;
+  --font-decorative: 'Cinzel Decorative', serif;
+  --font-body: 'Literata', serif;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--bg-dark);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--crimson-dark);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+/* Canvas Animation Background */
+#spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+/* Background Gradients */
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(122, 18, 25, 0.28), transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.09), transparent 50%),
+    radial-gradient(circle at 15% 50%, rgba(59, 10, 14, 0.45), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layout Wrapper */
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+}
+
+/* Navigation Bar */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17, 7, 8, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.site-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+@media (max-width: 768px) {
+  .site-nav-inner { padding: 0 20px; }
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+}
+
+.nav-brand svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--gold);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--gold-bright);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* HERO SECTION */
+.hero {
+  padding: 80px 0 60px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-crimson);
+}
+
+@media (max-width: 992px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(122, 18, 25, 0.35);
+  border: 1px solid var(--border-gold);
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+.hero-tag .spark-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--gold-bright);
+  animation: pulseSpark 1.5s infinite alternate;
+}
+
+@keyframes pulseSpark {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 1; }
+}
+
+.hero h1 {
+  font-family: var(--font-title);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  color: #ffffff;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.hero h1 span.surname {
+  color: var(--gold-bright);
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(135deg, #fff 20%, var(--gold-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p.subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  max-width: 620px;
+}
+
+@media (max-width: 992px) {
+  .hero p.subtitle { margin: 0 auto 32px; }
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 576px) {
+  .hero-meta-grid { grid-template-columns: 1fr; }
+}
+
+.meta-box {
+  background: rgba(28, 11, 14, 0.75);
+  border: 1px solid var(--border-gold);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+}
+
+.meta-box .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.meta-box .val {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+/* Portrait Card Frame */
+.portrait-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  box-shadow: var(--shadow-crimson), var(--shadow-glow);
+  background: var(--bg-card);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.portrait-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.35), 0 0 45px rgba(122, 18, 25, 0.75);
+}
+
+.portrait-card img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: contrast(1.05) brightness(0.95);
+  transition: filter 0.4s ease;
+}
+
+.portrait-card:hover img {
+  filter: contrast(1.1) brightness(1.02);
+}
+
+.portrait-overlay {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(17, 7, 8, 0.95) 0%, rgba(17, 7, 8, 0.6) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.portrait-name {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  font-weight: 700;
+}
+
+.portrait-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* SECTION HEADINGS */
+.section-header {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 10px;
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+/* SECTION SHELL */
+section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border-crimson);
+  position: relative;
+}
+
+/* PARCHMENT STORY SCROLL SECTION */
+.story-scroll-container {
+  background: var(--parchment-bg);
+  color: var(--parchment-text);
+  border-radius: 8px;
+  padding: 45px 55px;
+  position: relative;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.75),
+    inset 0 0 90px rgba(140, 109, 35, 0.22);
+  border: 4px double var(--parchment-border);
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .story-scroll-container { padding: 30px 20px; }
+}
+
+/* Decorative Parchment Wax Seal */
+.wax-seal {
+  position: absolute;
+  top: 35px;
+  right: 45px;
+  width: 74px;
+  height: 74px;
+  background: radial-gradient(circle, #a81c24 0%, #59090e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  border: 2px solid #7a1219;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.wax-seal:hover {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.wax-seal svg {
+  width: 38px;
+  height: 38px;
+  fill: var(--gold-bright);
+}
+
+.scroll-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.scroll-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 8px;
+}
+
+.scroll-title {
+  font-family: var(--font-decorative);
+  font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+  color: #2b0b10;
+  margin-bottom: 8px;
+}
+
+.scroll-subtitle {
+  font-family: var(--font-title);
+  font-style: italic;
+  color: #664c38;
+  font-size: 1.15rem;
+}
+
+.story-text-body {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #261710;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.story-text-body p {
+  margin-bottom: 18px;
+  text-indent: 1.4em;
+}
+
+.story-text-body p:first-of-type {
+  text-indent: 0;
+}
+
+.story-text-body p:first-of-type::first-letter {
+  font-family: var(--font-decorative);
+  font-size: 3.8rem;
+  float: left;
+  line-height: 0.85;
+  padding: 4px 10px 0 0;
+  color: var(--crimson-bright);
+}
+
+.scroll-footer-mark {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7a5c43;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--parchment-border);
+}
+
+/* FAMILY TREE SECTION */
+.tree-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+  overflow-x: auto;
+}
+
+.tree-svg-container {
+  min-width: 700px;
+  width: 100%;
+}
+
+.tree-caption-card {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: rgba(59, 10, 14, 0.45);
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* FAMILY GRID SECTION */
+.family-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.fam-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.fam-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--crimson-dark);
+  transition: background 0.3s ease;
+}
+
+.fam-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-gold);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.fam-card:hover::before {
+  background: var(--gold);
+}
+
+.fam-card.active-dash {
+  border-color: var(--gold);
+  background: rgba(59, 10, 14, 0.65);
+  box-shadow: var(--shadow-glow);
+}
+
+.fam-card.active-dash::before {
+  background: var(--gold-bright);
+}
+
+.fam-role {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.fam-name {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.fam-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* DESPEDIDA & LETTER SECTION */
+.letter-box {
+  background: var(--parchment-bg);
+  color: var(--parchment-text);
+  border-radius: 8px;
+  padding: 50px 60px;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  border: 3px double var(--parchment-border);
+}
+
+@media (max-width: 768px) {
+  .letter-box { padding: 36px 24px; }
+}
+
+.letter-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 12px;
+}
+
+.letter-title {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  color: #2b0b10;
+  margin-bottom: 20px;
+}
+
+.letter-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #261710;
+}
+
+.letter-content p { margin-bottom: 16px; }
+
+.letter-signature {
+  margin-top: 30px;
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--crimson-bright);
+  font-weight: 700;
+}
+
+/* FOOTER */
+footer {
+  padding: 50px 0;
+  text-align: center;
+  border-top: 1px solid var(--border-crimson);
+  background: rgba(17, 7, 8, 0.98);
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Lightbox Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  position: relative;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow), var(--shadow-crimson);
+}
+
+.modal-content img {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  background: rgba(122, 18, 25, 0.8);
+  color: #fff;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.modal-close:hover {
+  transform: scale(1.1);
+  background: var(--crimson-bright);
+}
+
+/* ==========================================================================
+   RPG CHARACTER SHEET & INVENTORY SECTION STYLES
+   ========================================================================== */
+
+.rpg-sheet-frame {
+  background: linear-gradient(145deg, #18090b 0%, #100607 60%, #1a080c 100%);
+  border: 2px solid var(--gold-dark);
+  border-radius: 12px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(59, 10, 14, 0.5);
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+/* Ornate Corner Decors */
+.rpg-frame-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.corner-tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.corner-tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+.corner-br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+.rpg-frame-corner::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px var(--gold-bright);
+}
+.corner-tl::after { top: 2px; left: 2px; }
+.corner-tr::after { top: 2px; right: 2px; }
+.corner-bl::after { bottom: 2px; left: 2px; }
+.corner-br::after { bottom: 2px; right: 2px; }
+
+/* RPG Main Header Layout */
+.rpg-profile-header {
+  display: grid;
+  grid-template-columns: 240px 1fr 240px;
+  gap: 30px;
+  align-items: center;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+  .rpg-profile-header {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 24px;
+  }
+}
+
+/* Left Column: Avatar & Ability Badge */
+.rpg-avatar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.rpg-avatar-ring {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(135deg, var(--gold-bright), var(--crimson), var(--gold-dark));
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rpg-avatar-ring:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.6);
+}
+
+.rpg-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid #110708;
+  display: block;
+}
+
+.rpg-level-badge {
+  position: absolute;
+  bottom: -4px;
+  right: 6px;
+  background: radial-gradient(circle, #2a0b10 0%, #120406 100%);
+  border: 2px solid var(--gold-bright);
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.dragon-blood-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, rgba(122, 18, 25, 0.6) 0%, rgba(59, 10, 14, 0.8) 100%);
+  border: 1px solid var(--gold);
+  border-radius: 30px;
+  padding: 8px 18px;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 15px rgba(173, 24, 35, 0.35);
+  animation: dragonPulse 3s infinite ease-in-out;
+}
+
+@keyframes dragonPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(173, 24, 35, 0.3); }
+  50% { box-shadow: 0 0 24px rgba(212, 175, 55, 0.45); }
+}
+
+.dragon-blood-badge svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--gold);
+}
+
+/* Center Column: Core Character Info & Progress Bars */
+.rpg-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rpg-char-name {
+  font-family: var(--font-decorative);
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.rpg-char-title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.rpg-details-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .rpg-details-pills { justify-content: center; }
+}
+
+.rpg-pill {
+  background: rgba(30, 10, 14, 0.8);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rpg-pill strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.rpg-pill.house-pill {
+  border-color: var(--crimson-bright);
+  background: rgba(122, 18, 25, 0.4);
+  color: var(--gold-bright);
+}
+
+/* Progress Bars (HP & XP) */
+.rpg-bars-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.rpg-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rpg-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.rpg-bar-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rpg-bar-fill-hp {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #7a1219, #ad1823, #d4af37);
+  box-shadow: 0 0 10px rgba(173, 24, 35, 0.8);
+}
+
+.rpg-bar-fill-xp {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #8c6d23, #d4af37, #f5cf56);
+  box-shadow: 0 0 12px rgba(245, 207, 86, 0.6);
+  position: relative;
+}
+
+.rpg-bar-fill-xp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmerXP 2.5s infinite;
+}
+
+@keyframes shimmerXP {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Right Column: Currency Vault & Level Shield */
+.rpg-vault-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.vault-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.coins-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 220px;
+}
+
+.coin-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(20, 8, 10, 0.85);
+  border-radius: 25px;
+  border: 1px solid var(--border-gold);
+  transition: all 0.2s ease;
+}
+
+.coin-chip:hover {
+  transform: translateX(4px);
+  border-color: var(--gold);
+  background: rgba(40, 12, 16, 0.9);
+}
+
+.coin-visual {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-disk {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: 0.85rem;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.6);
+  border: 1.5px solid rgba(0,0,0,0.3);
+}
+
+.coin-gold {
+  background: radial-gradient(circle, #f9df7b 0%, #d4af37 60%, #8c6d23 100%);
+  color: #422d00;
+}
+
+.coin-silver {
+  background: radial-gradient(circle, #f0f0f0 0%, #c0c0c0 60%, #7a7a7a 100%);
+  color: #222;
+}
+
+.coin-bronze {
+  background: radial-gradient(circle, #d98a53 0%, #b8622c 60%, #612d0e 100%);
+  color: #2b1103;
+}
+
+.coin-label {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.coin-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+/* ==========================================================================
+   RPG ATTRIBUTES SECTION
+   ========================================================================== */
+
+.rpg-attributes-block {
+  margin-bottom: 35px;
+}
+
+.rpg-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .rpg-stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .rpg-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  background: rgba(25, 9, 12, 0.7);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  background: rgba(45, 12, 16, 0.85);
+}
+
+.stat-card.stat-highlight {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, rgba(59, 10, 14, 0.9) 0%, rgba(30, 8, 10, 0.9) 100%);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+.stat-icon {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--gold);
+}
+
+.stat-name {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-family: var(--font-title);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.stat-card.stat-highlight .stat-value {
+  color: var(--gold-bright);
+  text-shadow: 0 0 12px rgba(245, 207, 86, 0.6);
+}
+
+.stat-sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   INVENTORY TABS & ITEMS GRID
+   ========================================================================== */
+
+.inv-section-title {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 10px;
+}
+
+.inv-tabs-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+
+.inv-tab-btn {
+  background: rgba(25, 9, 12, 0.7);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 10px 18px;
+  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.inv-tab-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.inv-tab-btn:hover {
+  color: #ffffff;
+  border-color: var(--gold);
+  background: rgba(59, 10, 14, 0.8);
+}
+
+.inv-tab-btn.active {
+  color: #110708;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+  border-color: var(--gold-bright);
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+}
+
+.inv-tab-btn.active svg {
+  fill: #110708;
+}
+
+/* Tab Panels */
+.inv-tab-panel {
+  display: none;
+  animation: fadeInPanel 0.3s ease;
+}
+
+.inv-tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeInPanel {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Items Grid */
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.item-card {
+  background: rgba(22, 8, 10, 0.8);
+  border: 1px solid var(--border-crimson);
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.item-card:hover {
+  border-color: var(--gold);
+  background: rgba(38, 12, 16, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.item-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(59, 10, 14, 0.6);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-icon-box svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--gold);
+}
+
+.item-card.is-wand .item-icon-box {
+  background: radial-gradient(circle, #7a1219, #2b0b10);
+  border-color: var(--gold-bright);
+}
+
+.item-card.is-wand .item-icon-box svg {
+  fill: var(--gold-bright);
+  filter: drop-shadow(0 0 6px var(--gold-bright));
+}
+
+.item-title-group {
+  flex-grow: 1;
+}
+
+.item-type-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2px;
+}
+
+.item-name {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.item-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  padding-top: 10px;
+  margin-top: auto;
+}
+
+.item-qty {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.item-qty strong {
+  color: var(--gold);
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-info-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item-info-btn:hover {
+  background: var(--gold);
+  color: #110708;
+  border-color: var(--gold-bright);
+}
+
+.item-use-btn {
+  background: linear-gradient(135deg, #7a1219, #a81c24);
+  border: 1px solid var(--gold);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.item-use-btn:hover {
+  background: linear-gradient(135deg, #a81c24, #d4af37);
+  color: #110708;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.item-use-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #333;
+  border-color: #555;
+  color: #888;
+}
+
+.uses-counter-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--amber);
+}
+
+/* Empty State Box for Other Tabs */
+.inv-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(20, 7, 9, 0.5);
+  border: 1px dashed var(--border-gold);
+  border-radius: 8px;
+}
+
+.inv-empty-state svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--gold-dark);
+  margin-bottom: 12px;
+}
+
+.inv-empty-title {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.inv-empty-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Transfer Tab Styling */
+.transfer-panel-box {
+  background: rgba(20, 8, 10, 0.7);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.transfer-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.transfer-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.transfer-input, .transfer-select {
+  background: rgba(10, 4, 5, 0.85);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.transfer-input:focus, .transfer-select:focus {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.transfer-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--crimson-bright), var(--gold-dark));
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.transfer-submit-btn:hover {
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #110708;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* Toast Notification */
+.rpg-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(25, 9, 12, 0.95);
+  border: 1px solid var(--gold);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 14px 22px;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.rpg-toast.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.rpg-toast svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--gold);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- Canvas Ember Animation -->
+<canvas id="spark-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<!-- NAVIGATION BAR -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="nav-brand">
+      <!-- Gryffindor Lion Crest Icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 2.18l7 2.33v4.69c0 4.54-3.13 8.78-7 9.8-3.87-1.02-7-5.26-7-9.8V6.51l7-2.33zM12 7a2 2 0 0 0-2 2c0 1.1.9 2 2 2s2-.9 2-2a2 2 0 0 0-2-2zm-3 7c0-1.5 1.5-3 3-3s3 1.5 3 3v2H9v-2z"/>
+      </svg>
+      <span>Dash Doyle</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" style="background:rgba(122, 18, 25, 0.6); border:1px solid var(--gold); padding:6px 14px; border-radius:4px; color:var(--gold-bright); text-decoration:none;">← Apresentação Geral</a></li>
+      <li><a href="index.html#historia">História</a></li>
+      <li><a href="index.html#sangue-draconiano">Sangue Draconiano</a></li>
+      <li><a href="index.html#linhagem">Linhagem</a></li>
+      <li><a href="index.html#familia">Família</a></li>
+      <li><a href="index.html#carta">Carta</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- FICHA & INVENTÁRIO RPG -->
+  <section id="ficha-rpg" style="padding-top: 30px;">
+
+    <div class="rpg-sheet-frame">
+      <!-- Art-Deco Frame Corners -->
+      <div class="rpg-frame-corner corner-tl"></div>
+      <div class="rpg-frame-corner corner-tr"></div>
+      <div class="rpg-frame-corner corner-bl"></div>
+      <div class="rpg-frame-corner corner-br"></div>
+
+      <!-- Main Profile Header (Avatar, Info, Currency) -->
+      <div class="rpg-profile-header">
+        <!-- Avatar & Ability -->
+        <div class="rpg-avatar-column">
+          <div class="rpg-avatar-ring" onclick="openModal('images/media_1786300878813.jpg')">
+            <img src="images/media_1786300878813.jpg" alt="Dashiel Doyle Fairstone" class="rpg-avatar-img">
+            <div class="rpg-level-badge">Nv. 3</div>
+          </div>
+          
+          <div class="dragon-blood-badge" onclick="showToast('Habilidade: Sangue Draconiano ativa!')" style="cursor:pointer;" title="Herança Mágica Rara">
+            <!-- Dragon Icon SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <span>Sangue Draconiano</span>
+          </div>
+        </div>
+
+        <!-- Center: Name, Details & Bars -->
+        <div class="rpg-info-column">
+          <div>
+            <div class="rpg-char-title">Aluno · Terceiranista (Hogwarts 2099)</div>
+            <h1 class="rpg-char-name">Dashiel Doyle Fairstone</h1>
+          </div>
+
+          <div class="rpg-details-pills">
+            <div class="rpg-pill"><strong>Idade:</strong> 13 Anos</div>
+            <div class="rpg-pill"><strong>Nacionalidade:</strong> Australiano</div>
+            <div class="rpg-pill"><strong>Sangue:</strong> Mestiço</div>
+            <div class="rpg-pill house-pill">
+              <!-- Lion Icon -->
+              <svg style="width:14px;height:14px;fill:var(--gold-bright);" viewBox="0 0 24 24">
+                <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z"/>
+              </svg>
+              <strong>Casa:</strong> Grifinória
+            </div>
+          </div>
+
+          <div class="rpg-bars-group">
+            <!-- HP Bar -->
+            <div class="rpg-bar-item">
+              <div class="rpg-bar-labels">
+                <span>Vitalidade (HP)</span>
+                <span style="color:var(--gold-bright); font-weight:600;">50 / 50</span>
+              </div>
+              <div class="rpg-bar-track">
+                <div class="rpg-bar-fill-hp"></div>
+              </div>
+            </div>
+
+            <!-- XP Bar -->
+            <div class="rpg-bar-item">
+              <div class="rpg-bar-labels">
+                <span>Experiência (XP) · Nível 3</span>
+                <span><strong>120</strong> / 300 XP (Faltam 180 XP)</span>
+              </div>
+              <div class="rpg-bar-track">
+                <div class="rpg-bar-fill-xp"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Vault & Coins -->
+        <div class="rpg-vault-column">
+          <div class="vault-title">Cofre de Gringotts</div>
+          <div class="coins-stack">
+            <!-- Galeões -->
+            <div class="coin-chip" onclick="showToast('9 Galeões de Ouro guardados')" style="cursor:pointer;" title="Galeão de Ouro">
+              <div class="coin-visual">
+                <div class="coin-disk coin-gold">G</div>
+                <div class="coin-label">Galeões</div>
+              </div>
+              <div class="coin-val">9</div>
+            </div>
+            <!-- Sicles -->
+            <div class="coin-chip" onclick="showToast('7 Sicles de Prata guardados')" style="cursor:pointer;" title="Sicle de Prata">
+              <div class="coin-visual">
+                <div class="coin-disk coin-silver">S</div>
+                <div class="coin-label">Sicles</div>
+              </div>
+              <div class="coin-val">7</div>
+            </div>
+            <!-- Nuques -->
+            <div class="coin-chip" onclick="showToast('9 Nuques de Bronze guardados')" style="cursor:pointer;" title="Nuque de Bronze">
+              <div class="coin-visual">
+                <div class="coin-disk coin-bronze">N</div>
+                <div class="coin-label">Nuques</div>
+              </div>
+              <div class="coin-val">9</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attributes Grid (Clean: No redundant subtitles) -->
+      <div class="rpg-attributes-block">
+        <div class="rpg-stats-grid">
+          <!-- Carisma -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div class="stat-name">Carisma</div>
+            <div class="stat-value">1</div>
+          </div>
+
+          <!-- Constituição -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            </div>
+            <div class="stat-name">Constituição</div>
+            <div class="stat-value">0</div>
+          </div>
+
+          <!-- Destreza -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M7.5 4C5.57 4 4 5.57 4 7.5S5.57 11 7.5 11 11 9.43 11 7.5 9.43 4 7.5 4zm0 5C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm6.5-5v2h3.59l-9.83 9.83 1.41 1.41L19 7.41V11h2V4h-7z"/></svg>
+            </div>
+            <div class="stat-name">Destreza</div>
+            <div class="stat-value">1</div>
+          </div>
+
+          <!-- Força -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 1.43-1.43-1.43-1.43z"/></svg>
+            </div>
+            <div class="stat-name">Força</div>
+            <div class="stat-value">0</div>
+          </div>
+
+          <!-- Poder Mágico (Destaque 3) -->
+          <div class="stat-card stat-highlight" title="Atributo Principal">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M7.5 5.6L10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7zm12 9.8L17 14l1.4 2.5L17 19l2.5-1.4L22 19l-1.4-2.5L22 14zM22 2l-2.5 1.4L17 2l1.4 2.5L17 7l2.5-1.4L22 7l-1.4-2.5zm-7.63 5.29c-.39-.39-1.02-.39-1.41 0L1.29 18.96c-.39.39-.39 1.02 0 1.41l2.34 2.34c.39.39 1.02.39 1.41 0L16.7 11.05c.39-.39.39-1.02 0-1.41l-2.33-2.35zm-1.03 5.49l-2.12-2.12 6.36-6.36 2.12 2.12-6.36 6.36z"/></svg>
+            </div>
+            <div class="stat-name" style="color:var(--gold-bright);">Poder Mágico</div>
+            <div class="stat-value">3</div>
+          </div>
+
+          <!-- Sabedoria -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.59 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+            </div>
+            <div class="stat-name">Sabedoria</div>
+            <div class="stat-value">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Navigation Tabs -->
+      <div class="inv-section-title">
+        <span>Inventário de Pertences</span>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Capacidade: 14 / 30 Slots</span>
+      </div>
+
+      <div class="inv-tabs-list">
+        <button class="inv-tab-btn active" onclick="switchInvTab('tab-mochila', this)">
+          <svg viewBox="0 0 24 24"><path d="M20 8v12c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h3V4c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2v2h3c1.1 0 2 .9 2 2zM6 8v12h12V8H6zm5-4v2h2V4h-2z"/></svg>
+          <span>Mochila (14)</span>
+        </button>
+
+        <button class="inv-tab-btn" onclick="switchInvTab('tab-especiais', this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 9l11 13 11-13-11-7zm0 3.84L18.46 9H5.54L12 5.84zm-6.28 5.16h12.56L12 18.25 5.72 11z"/></svg>
+          <span>Itens Especiais (3)</span>
+        </button>
+
+        <button class="inv-tab-btn" onclick="switchInvTab('tab-livros', this)">
+          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+          <span>Livros (4)</span>
+        </button>
+
+        <button class="inv-tab-btn" onclick="switchInvTab('tab-vestuario', this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2c1.1 0 2 .9 2 2 0 .74-.4 1.38-1 1.72V7l8 4.5v1.5l-2-.5V20c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2v-7.5l-2 .5V11.5L11 7V5.72c-.6-.34-1-.98-1-1.72 0-1.1.9-2 2-2z"/></svg>
+          <span>Vestuário (2)</span>
+        </button>
+
+        <button class="inv-tab-btn" onclick="switchInvTab('tab-animais', this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.82.62-3.49 1.64-4.83 1.43 1.12 3.23 1.83 5.36 1.83 2.13 0 3.93-.71 5.36-1.83 1.02 1.34 1.64 3.01 1.64 4.83 0 4.41-3.59 8-8 8z"/></svg>
+          <span>Animais (1)</span>
+        </button>
+
+        <button class="inv-tab-btn" onclick="switchInvTab('tab-habilidades', this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
+          <span>Habilidades (2)</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: MOCHILA (14 ITEMS) -->
+      <div id="tab-mochila" class="inv-tab-panel active">
+        <div class="inv-grid">
+          <!-- 1. Saco de ração -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Suprimento</div>
+                <div class="item-name">Saco de Ração</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Mistura nutritiva especial para o sustento de criaturas e animais do santuário.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Saco de Ração · Item para trato de criaturas')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Vassoura Oakshaft 2096 -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Voo & Transporte</div>
+                <div class="item-name">Vassoura Oakshaft 2096</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Vassoura robusta e aerodinâmica para voos prolongados e viagens desafiadoras.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Vassoura Oakshaft 2096 · Velocidade e estabilidade')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Kit de Frascos (4 Un) -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M6 3v2h2v4.18C6.8 10.12 6 11.96 6 14c0 3.31 2.69 6 6 6s6-2.69 6-6c0-2.04-.8-3.88-2-4.82V5h2V3H6zm6 15c-2.21 0-4-1.79-4-4 0-1.42.74-2.68 1.85-3.38L10 10.5V5h4v5.5l.15.12C15.26 11.32 16 12.58 16 14c0 2.21-1.79 4-4 4z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Poções & Vidraria</div>
+                <div class="item-name">Kit de Frascos (4 Un)</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Quatro recipientes de cristal temperado com rolha para armazenar elixires e extratos.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1 (4 un)</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Kit de 4 Frascos de Vidro Temperado')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Caldeirão de estanho tamanho padrão 2 -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Equipamento</div>
+                <div class="item-name">Caldeirão de Estanho (Padrão 2)</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Caldeirão regulamentar oficial exigido para as práticas e avaliações de Poções do 3º ano.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Caldeirão de Estanho · Tamanho 2 Padrão')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Balança de Latão -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Instrumento</div>
+                <div class="item-name">Balança de Latão</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Balança de precisão dobrável com conjunto de contrapesos para pesagem de pós e ervas.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Balança de Precisão em Latão Polido')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Tinteiro Preto -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.59 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Escrita</div>
+                <div class="item-name">Tinteiro Preto</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Frasco de tinta preta indelével encantada para não borrar sob garoas ou vapor de caldeirão.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Tinteiro de Tinta Negra Mágica')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Telescópio -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Astronomia</div>
+                <div class="item-name">Telescópio de Latão</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Telescópio retrátil com lentes de cristal polido para observação dos corpos celestes na Torre.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Telescópio Retrátil para Astronomia')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Pena com ponta simples -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Escrita</div>
+                <div class="item-name">Pena com Ponta Simples</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Pena de ave escura, talhada e tratada para uma escrita contínua, firme e sem respingos.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Pena de Escrita Regulamentar')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Kit de 100 pergaminhos -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Material</div>
+                <div class="item-name">Kit de 100 Pergaminhos</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Rolo completo com cem folhas de pergaminho grosso para anotações, trabalhos e feitiços.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1 (100 folhas)</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Rolo de 100 Pergaminhos Oficiais')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Sinete Personalizado -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Correspondência</div>
+                <div class="item-name">Sinete Personalizado</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Haste de madeira torneada com cunho metálico trazendo o brasão pessoal para lacrar cartas.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Sinete com Brasão Pessoal dos Doyle')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. Cera para lacre -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Correspondência</div>
+                <div class="item-name">Cera para Lacre</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Conjunto de bastões de cera especial com pavio nas tonalidades carmesim e dourada.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Quantidade: <strong>1</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Bastões de Cera para Lacre Carmesim e Ouro')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12. Varinha Mágica (Destaque Principal) -->
+          <div class="item-card is-wand" style="border-color:var(--gold); background:rgba(45, 12, 16, 0.9);">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M7.5 5.6L10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7zm12 9.8L17 14l1.4 2.5L17 19l2.5-1.4L22 19l-1.4-2.5L22 14zM22 2l-2.5 1.4L17 2l1.4 2.5L17 7l2.5-1.4L22 7l-1.4-2.5zm-7.63 5.29c-.39-.39-1.02-.39-1.41 0L1.29 18.96c-.39.39-.39 1.02 0 1.41l2.34 2.34c.39.39 1.02.39 1.41 0L16.7 11.05c.39-.39.39-1.02 0-1.41l-2.33-2.35zm-1.03 5.49l-2.12-2.12 6.36-6.36 2.12 2.12-6.36 6.36z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag" style="color:var(--gold-bright);">Foco Mágico Principal</div>
+                <div class="item-name" style="color:var(--gold-bright);">Varinha de Carvalho-Roble</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              <strong>Núcleo:</strong> Pena de Fênix · <strong>Comprimento:</strong> 38 cm · <strong>Flexibilidade:</strong> Inflexível. Poderosa, leal e de temperamento ardente.
+            </div>
+            <div class="item-footer">
+              <div class="item-qty">Status: <strong style="color:var(--gold-bright);">Equipada</strong></div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Varinha: Carvalho-Roble & Pena de Fênix, 38cm')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. Bomba de Bosta -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Travessura / Consumível</div>
+                <div class="item-name">Bomba de Bosta</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Artefato fedorento clássico. Provoca fumaça densa de odor fétido e distração imediata nos corredores.
+            </div>
+            <div class="item-footer">
+              <div>
+                <div class="item-qty">Quantidade: <strong>1</strong></div>
+                <div class="uses-counter-tag">Usos restantes: 0 / 3</div>
+              </div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Bomba de Bosta: 3 cargas de travessura')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14. Caramelo Incha-Língua -->
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 18c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8zm1-13h-2v6h6v-2h-4V7z"/></svg>
+              </div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Travessura / Consumível</div>
+                <div class="item-name">Caramelo Incha-Língua</div>
+              </div>
+            </div>
+            <div class="item-desc">
+              Doce enfeitiçado. Ao ser ingerido, faz a língua da vítima crescer de forma exagerada e cômica.
+            </div>
+            <div class="item-footer">
+              <div>
+                <div class="item-qty">Quantidade: <strong>1</strong></div>
+                <div class="uses-counter-tag">Usos restantes: 0 / 3</div>
+              </div>
+              <div class="item-actions">
+                <button class="item-info-btn" onclick="showToast('Caramelo Incha-Língua: 3 doses de efeito')" title="Detalhes">i</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: ITENS ESPECIAIS -->
+      <div id="tab-especiais" class="inv-tab-panel">
+        <div class="inv-grid">
+          <div class="item-card" style="border-color:var(--gold);">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2L1 9l11 13 11-13-11-7z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag" style="color:var(--gold-bright);">Relíquia de Origem</div>
+                <div class="item-name">Pedra de Opala Australiana</div>
+              </div>
+            </div>
+            <div class="item-desc">Fragmento mineral bruto lapidado pelo próprio Dash nas minas de Poeira de Opala antes da viagem.</div>
+            <div class="item-footer"><div class="item-qty">Tipo: <strong>Amuleto de Família</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Lembrança Secreta</div>
+                <div class="item-name">Lata de Fósforos de 2092</div>
+              </div>
+            </div>
+            <div class="item-desc">A velha caixa do primeiro incêndio que Dash causou aos seis anos, escondida secretamente no baú pela irmã Ivy.</div>
+            <div class="item-footer"><div class="item-qty">Origem: <strong>Presente de Ivy Doyle</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Documento Legal</div>
+                <div class="item-name">Certidão do Vínculo de Sangue</div>
+              </div>
+            </div>
+            <div class="item-desc">Cópia autenticada por Gringotts garantindo a herança educacional e o custeio integral em Hogwarts.</div>
+            <div class="item-footer"><div class="item-qty">Emissor: <strong>Gringotts Londres</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: LIVROS DIDÁTICOS -->
+      <div id="tab-livros" class="inv-tab-panel">
+        <div class="inv-grid">
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Feitiços</div>
+                <div class="item-name">O Livro Padrão de Feitiços (3º Grau)</div>
+              </div>
+            </div>
+            <div class="item-desc">Por Miranda Goshawk. Abrange feitiços como Riddikulus, Lumos Maxima e encantamentos avançados.</div>
+            <div class="item-footer"><div class="item-qty">Disciplina: <strong>Feitiços</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Transfiguração</div>
+                <div class="item-name">Guia de Transfiguração Intermediária</div>
+              </div>
+            </div>
+            <div class="item-desc">Por Emeric Switch. Métodos de transformação orgânica e transfiguração de animais e objetos complexos.</div>
+            <div class="item-footer"><div class="item-qty">Disciplina: <strong>Transfiguração</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Herbologia</div>
+                <div class="item-name">Mil Ervas e Fungos Mágicos</div>
+              </div>
+            </div>
+            <div class="item-desc">Por Phyllida Spore. O livro favorito da mãe, repleto de anotações manuscritas nas margens.</div>
+            <div class="item-footer"><div class="item-qty">Disciplina: <strong>Herbologia</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Poções</div>
+                <div class="item-name">Caderno de Poções do Irmão Cass</div>
+              </div>
+            </div>
+            <div class="item-desc">Caderno prático entregue pelo irmão mais velho com dicas cruciais para não explodir caldeirões.</div>
+            <div class="item-footer"><div class="item-qty">Disciplina: <strong>Poções</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: VESTUÁRIO -->
+      <div id="tab-vestuario" class="inv-tab-panel">
+        <div class="inv-grid">
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2c1.1 0 2 .9 2 2v16H10V4c0-1.1.9-2 2-2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Uniforme Oficial</div>
+                <div class="item-name">Vestes de Hogwarts (Grifinória)</div>
+              </div>
+            </div>
+            <div class="item-desc">Capa preta com forro de cetim escarlate e brasão do leão bordado no peito esquerdo.</div>
+            <div class="item-footer"><div class="item-qty">Status: <strong>Pronto para uso</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Acessório Térmico</div>
+                <div class="item-name">Luvas de Couro de Dragão</div>
+              </div>
+            </div>
+            <div class="item-desc">Luvas reforçadas e isolantes para manuseio seguro em Herbologia, Poções e Criaturas.</div>
+            <div class="item-footer"><div class="item-qty">Proteção: <strong>Alta resistência</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: ANIMAIS & CRIATURAS -->
+      <div id="tab-animais" class="inv-tab-panel">
+        <div class="inv-grid">
+          <div class="item-card" style="border-color:var(--gold);">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag" style="color:var(--gold-bright);">Mascote do Santuário</div>
+                <div class="item-name">Niffler Australiano ("Budge")</div>
+              </div>
+            </div>
+            <div class="item-desc">Criatura curiosa e leal resgatada de armadilhas no deserto de Nova Gales do Sul. Fascinado por coisas brilhantes.</div>
+            <div class="item-footer"><div class="item-qty">Vínculo: <strong>Fiel Companheiro</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: HABILIDADES -->
+      <div id="tab-habilidades" class="inv-tab-panel">
+        <div class="inv-grid">
+          <div class="item-card" style="border-color:var(--gold); background:rgba(45, 12, 16, 0.9);">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2L1 9l11 13 11-13-11-7z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag" style="color:var(--gold-bright);">Herança Arcana Rara</div>
+                <div class="item-name" style="color:var(--gold-bright);">Sangue Draconiano</div>
+              </div>
+            </div>
+            <div class="item-desc">Resistência física a altas temperaturas, facilidade inata com chamas e empatia instintiva com répteis mágicos.</div>
+            <div class="item-footer"><div class="item-qty">Tipo: <strong>Passiva Especial</strong></div></div>
+          </div>
+
+          <div class="item-card">
+            <div class="item-header">
+              <div class="item-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z"/></svg></div>
+              <div class="item-title-group">
+                <div class="item-type-tag">Talento de Bravura</div>
+                <div class="item-name">Ímpeto Destemido</div>
+              </div>
+            </div>
+            <div class="item-desc">Incapacidade natural de recuar diante de injustiças ou intimidação. Concede bônus de foco sob pressão.</div>
+            <div class="item-footer"><div class="item-qty">Tipo: <strong>Característica Grifinória</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p class="footer-text">
+      Ficha de Personagem RPG · Dashiell Doyle · Universo Harry Potter 2099
+    </p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX MODAL -->
+<div class="modal-overlay" id="image-modal" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modal-img" src="" alt="Ampliação de Foto">
+  </div>
+</div>
+
+<!-- JAVASCRIPT ANIMATION & INTERACTIVES -->
+<script>
+// Spark Canvas Animation
+const canvas = document.getElementById('spark-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+let particles = [];
+
+function initCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+  
+  const count = Math.floor(width * 0.04);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2.2 + 0.6,
+      speedX: (Math.random() - 0.5) * 0.6,
+      speedY: -Math.random() * 0.8 - 0.2,
+      opacity: Math.random() * 0.7 + 0.3,
+      color: Math.random() > 0.4 ? '#d4af37' : '#ad1823'
+    });
+  }
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, width, height);
+
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    
+    if (p.y < 0) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+    if (p.x < 0 || p.x > width) {
+      p.speedX *= -1;
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = p.color;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+
+// Lightbox Modal Functions
+function openModal(src) {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-img');
+  modalImg.src = src;
+  modal.classList.add('active');
+}
+
+function closeModal() {
+  const modal = document.getElementById('image-modal');
+  modal.classList.remove('active');
+}
+
+// ESC Key to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ==========================================
+// RPG INVENTORY INTERACTIVE JAVASCRIPT
+// ==========================================
+
+// Switch Inventory Tabs
+function switchInvTab(tabId, btn) {
+  // Update Buttons
+  const allBtns = document.querySelectorAll('.inv-tab-btn');
+  allBtns.forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Update Panels
+  const allPanels = document.querySelectorAll('.inv-tab-panel');
+  allPanels.forEach(p => p.classList.remove('active'));
+
+  const targetPanel = document.getElementById(tabId);
+  if (targetPanel) {
+    targetPanel.classList.add('active');
+  }
+}
+
+// Toast Notification Function
+let toastTimer = null;
+function showToast(msg) {
+  const toast = document.getElementById('rpg-toast');
+  const toastMsg = document.getElementById('toast-msg');
+  if (!toast || !toastMsg) return;
+
+  toastMsg.textContent = msg;
+  toast.classList.add('active');
+
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('active');
+  }, 3000);
+}
+</script>
+
+<!-- RPG TOAST NOTIFICATION -->
+<div class="rpg-toast" id="rpg-toast">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/>
+  </svg>
+  <span id="toast-msg">Mensagem mágica</span>
+</div>
+</body>
+</html>
