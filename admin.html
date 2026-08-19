@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo — Dashiell Doyle</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-dark: #110708;
+  --bg-card: #1c0b0e;
+  --bg-card-hover: #2a1014;
+  --crimson-dark: #3b0a0e;
+  --crimson: #7a1219;
+  --crimson-bright: #ad1823;
+  --gold-dark: #8c6d23;
+  --gold: #d4af37;
+  --gold-bright: #f5cf56;
+  --text-main: #f5ebdf;
+  --text-muted: #c4b3a3;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --font-title: 'Cinzel', serif;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(122, 18, 25, 0.2), transparent 60%),
+    radial-gradient(circle at 15% 50%, rgba(59, 10, 14, 0.35), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+}
+
+/* LOGIN SCREEN */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.login-logo svg {
+  width: 50px;
+  height: 50px;
+  fill: var(--gold);
+  margin-bottom: 15px;
+}
+
+.login-title {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--gold-bright);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--crimson), var(--crimson-bright));
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--border-gold);
+  color: var(--text-muted);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 15px;
+  display: none;
+}
+
+/* ADMIN DASHBOARD */
+.admin-dashboard {
+  display: none;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-title-group h1 {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  color: #ffffff;
+}
+
+.admin-title-group p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  border-color: var(--crimson-bright);
+  color: var(--crimson-bright);
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 15px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: var(--gold-bright);
+  border-color: var(--gold);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* Form and List Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  height: fit-content;
+}
+
+.panel-subtitle {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding-bottom: 10px;
+}
+
+/* Items List */
+.items-list-container {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.list-item {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.2s;
+}
+
+.list-item:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: var(--border-gold);
+}
+
+.list-item-info {
+  flex-grow: 1;
+}
+
+.list-item-title {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.list-item-meta {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-family: var(--font-mono);
+  margin-top: 4px;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.action-btn.edit-btn:hover {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+
+.action-btn.delete-btn:hover {
+  border-color: var(--crimson-bright);
+  color: var(--crimson-bright);
+}
+
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.notice-box {
+  background: rgba(140, 109, 35, 0.08);
+  border: 1px solid rgba(140, 109, 35, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="spark-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<div class="wrap">
+  <!-- 1. LOGIN SCREEN -->
+  <div class="login-container" id="login-container">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 2.18l7 2.33v4.69c0 4.54-3.13 8.78-7 9.8-3.87-1.02-7-5.26-7-9.8V6.51l7-2.33zM12 7a2 2 0 0 0-2 2c0 1.1.9 2 2 2s2-.9 2-2a2 2 0 0 0-2-2zm-3 7c0-1.5 1.5-3 3-3s3 1.5 3 3v2H9v-2z"/></svg>
+      </div>
+      <h2 class="login-title">Acesso ao Grimório</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input type="email" id="login-email" class="form-control" placeholder="admin@doyle.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn">Desbloquear Canal</button>
+        <div class="error-message" id="login-error">Credenciais incorretas. Tente novamente.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ADMIN DASHBOARD -->
+  <div class="admin-dashboard" id="admin-dashboard">
+    <header class="admin-header">
+      <div class="admin-title-group">
+        <h1>Painel do Escritor</h1>
+        <p>Cadastre feitiços, anotações de aulas e crônicas narrativas.</p>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Encerrar Sessão</button>
+    </header>
+
+    <nav class="admin-tabs">
+      <button class="tab-btn active" id="tab-btn-feiticos" onclick="switchTab('feiticos')">Feitiços & Grimório</button>
+      <button class="tab-btn" id="tab-btn-contos" onclick="switchTab('contos')">Contos & Narrativas</button>
+    </nav>
+
+    <!-- TAB PANEL: FEITIÇOS -->
+    <div class="tab-panel active" id="panel-feiticos">
+      <div class="dashboard-grid">
+        <!-- Form -->
+        <div class="panel-card">
+          <h2 class="panel-subtitle" id="spell-form-title">Registrar Novo Feitiço</h2>
+          <form id="spell-form">
+            <input type="hidden" id="spell-id">
+            <div class="form-group">
+              <label class="form-label">Nome do Feitiço</label>
+              <input type="text" id="spell-name" class="form-control" placeholder="ex: Expelliarmus" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Categoria / Matéria</label>
+              <select id="spell-category" class="form-control" style="background:#110708; color:#fff;" required>
+                <option value="Feitiços">Feitiços</option>
+                <option value="Transfiguração">Transfiguração</option>
+                <option value="Herbologia">Herbologia</option>
+                <option value="DCAT">Defesa Contra as Artes das Trevas</option>
+                <option value="Poções">Poções</option>
+                <option value="Anotações Gerais">Anotações Gerais</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Efeito / Descrição</label>
+              <textarea id="spell-effect" class="form-control" placeholder="Descreva os movimentos de varinha, efeito do encantamento e observações..." required></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button type="submit" class="btn">Salvar Feitiço</button>
+              <button type="button" class="btn btn-secondary" id="spell-cancel-btn" style="display:none;" onclick="resetSpellForm()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- List -->
+        <div class="panel-card">
+          <h2 class="panel-subtitle">Grimório Cadastrado</h2>
+          <div class="items-list-container" id="spells-list">
+            <!-- Loading -->
+            <p style="text-align:center; color:var(--text-muted);">Acessando arquivos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB PANEL: CONTOS -->
+    <div class="tab-panel" id="panel-contos">
+      <div class="dashboard-grid">
+        <!-- Form -->
+        <div class="panel-card">
+          <h2 class="panel-subtitle" id="tale-form-title">Publicar Nova Narrativa</h2>
+          <form id="tale-form">
+            <input type="hidden" id="tale-id">
+            <div class="form-group">
+              <label class="form-label">Título do Conto</label>
+              <input type="text" id="tale-title" class="form-control" placeholder="ex: O despertar no beco" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data de Publicação</label>
+              <input type="date" id="tale-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags (separadas por vírgula)</label>
+              <input type="text" id="tale-tags" class="form-control" placeholder="ex: Hogwarts, Aventura, Santuario">
+            </div>
+            <div class="notice-box">
+              <strong>Instrução de formatação:</strong> Use uma linha em branco dupla (pressione Enter duas vezes) para separar parágrafos. A primeira letra do conto receberá automaticamente uma letra capitular estilizada na leitura pública.
+            </div>
+            <div class="form-group">
+              <label class="form-label">Conteúdo do Conto</label>
+              <textarea id="tale-content" class="form-control" style="min-height:250px;" placeholder="Escreva a narrativa..." required></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button type="submit" class="btn">Publicar Conto</button>
+              <button type="button" class="btn btn-secondary" id="tale-cancel-btn" style="display:none;" onclick="resetTaleForm()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- List -->
+        <div class="panel-card">
+          <h2 class="panel-subtitle">Histórias Publicadas</h2>
+          <div class="items-list-container" id="tales-list">
+            <!-- Loading -->
+            <p style="text-align:center; color:var(--text-muted);">Acessando arquivos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+// Spark animation consistent with website
+const canvas = document.getElementById('spark-canvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+
+function initCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+  const count = Math.floor(width * 0.03);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2 + 0.5,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: -Math.random() * 0.6 - 0.2,
+      opacity: Math.random() * 0.6 + 0.3,
+      color: Math.random() > 0.4 ? '#d4af37' : '#ad1823'
+    });
+  }
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, width, height);
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if (p.y < 0) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+
+// Tab Switcher JS
+window.switchTab = function(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+  
+  if (tabName === 'feiticos') {
+    document.getElementById('tab-btn-feiticos').classList.add('active');
+    document.getElementById('panel-feiticos').classList.add('active');
+  } else {
+    document.getElementById('tab-btn-contos').classList.add('active');
+    document.getElementById('panel-contos').classList.add('active');
+  }
+};
+</script>
+
+<!-- Firebase logic module -->
+<script type="module">
+import { auth, db } from "./firebase-config.js";
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+  collection, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  doc, 
+  onSnapshot, 
+  query, 
+  orderBy, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// Handle Authentication State Change
+onAuthStateChanged(auth, (user) => {
+  const loginView = document.getElementById('login-container');
+  const dashboardView = document.getElementById('admin-dashboard');
+  
+  if (user) {
+    loginView.style.display = 'none';
+    dashboardView.style.display = 'block';
+    setupLiveLists();
+  } else {
+    loginView.style.display = 'flex';
+    dashboardView.style.display = 'none';
+  }
+});
+
+// Handle Login Submission
+const loginForm = document.getElementById('login-form');
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const errorMsg = document.getElementById('login-error');
+  
+  errorMsg.style.display = 'none';
+  
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.error("Erro ao fazer login: ", error);
+    errorMsg.style.display = 'block';
+  }
+});
+
+// Logout handler
+window.handleLogout = async function() {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Erro ao fazer logout: ", error);
+  }
+};
+
+// Forms submissions
+const spellForm = document.getElementById('spell-form');
+spellForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('spell-id').value;
+  const nome = document.getElementById('spell-name').value.trim();
+  const categoria = document.getElementById('spell-category').value;
+  const efeito = document.getElementById('spell-effect').value.trim();
+  
+  try {
+    if (id) {
+      // Update
+      await updateDoc(doc(db, "feiticos", id), { nome, categoria, efeito });
+    } else {
+      // Add
+      await addDoc(collection(db, "feiticos"), { 
+        nome, 
+        categoria, 
+        efeito, 
+        dataCriacao: serverTimestamp() 
+      });
+    }
+    resetSpellForm();
+  } catch (error) {
+    console.error("Erro ao salvar feitiço: ", error);
+    alert("Erro ao salvar no banco de dados.");
+  }
+});
+
+const taleForm = document.getElementById('tale-form');
+taleForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('tale-id').value;
+  const titulo = document.getElementById('tale-title').value.trim();
+  const rawDate = document.getElementById('tale-date').value; // YYYY-MM-DD
+  const rawTags = document.getElementById('tale-tags').value;
+  const conteudo = document.getElementById('tale-content').value.trim();
+  
+  // Format Tags
+  const tags = rawTags.split(',').map(tag => tag.trim()).filter(tag => tag);
+  
+  // Convert date to JS Date object
+  const dateParts = rawDate.split('-');
+  const dataPublicacao = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], 12, 0, 0);
+  
+  try {
+    if (id) {
+      // Update
+      await updateDoc(doc(db, "contos", id), { titulo, dataPublicacao, tags, conteudo });
+    } else {
+      // Add
+      await addDoc(collection(db, "contos"), { 
+        titulo, 
+        dataPublicacao, 
+        tags, 
+        conteudo,
+        dataCriacao: serverTimestamp() 
+      });
+    }
+    resetTaleForm();
+  } catch (error) {
+    console.error("Erro ao salvar conto: ", error);
+    alert("Erro ao salvar no banco de dados.");
+  }
+});
+
+// Reset forms utilities
+window.resetSpellForm = function() {
+  spellForm.reset();
+  document.getElementById('spell-id').value = '';
+  document.getElementById('spell-form-title').innerText = 'Registrar Novo Feitiço';
+  document.getElementById('spell-cancel-btn').style.display = 'none';
+};
+
+window.resetTaleForm = function() {
+  taleForm.reset();
+  document.getElementById('tale-id').value = '';
+  document.getElementById('tale-form-title').innerText = 'Publicar Nova Narrativa';
+  document.getElementById('tale-cancel-btn').style.display = 'none';
+  // Pre-fill today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('tale-date').value = today;
+};
+
+// Set today's date by default on page load
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('tale-date').value = today;
+
+// Setup Live lists
+let spellsUnsubscribe = null;
+let talesUnsubscribe = null;
+
+function setupLiveLists() {
+  if (spellsUnsubscribe) spellsUnsubscribe();
+  if (talesUnsubscribe) talesUnsubscribe();
+  
+  const spellsList = document.getElementById('spells-list');
+  const talesList = document.getElementById('tales-list');
+  
+  // 1. Spells Listener
+  const spellsQuery = query(collection(db, "feiticos"), orderBy("dataCriacao", "desc"));
+  spellsUnsubscribe = onSnapshot(spellsQuery, (snapshot) => {
+    spellsList.innerHTML = '';
+    if (snapshot.empty) {
+      spellsList.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Nenhum feitiço cadastrado.</p>';
+      return;
+    }
+    
+    snapshot.forEach(docSnap => {
+      const spell = { id: docSnap.id, ...docSnap.data() };
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'list-item';
+      
+      itemDiv.innerHTML = `
+        <div class="list-item-info">
+          <div class="list-item-title">${spell.nome}</div>
+          <div class="list-item-meta">${spell.categoria}</div>
+        </div>
+        <div class="list-item-actions">
+          <button class="action-btn edit-btn" onclick="editSpell('${spell.id}', '${escapeJS(spell.nome)}', '${escapeJS(spell.categoria)}', '${escapeJS(spell.efeito)}')" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="action-btn delete-btn" onclick="deleteSpell('${spell.id}', '${escapeJS(spell.nome)}')" title="Excluir">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      `;
+      spellsList.appendChild(itemDiv);
+    });
+  });
+  
+  // 2. Tales Listener
+  const talesQuery = query(collection(db, "contos"), orderBy("dataPublicacao", "desc"));
+  talesUnsubscribe = onSnapshot(talesQuery, (snapshot) => {
+    talesList.innerHTML = '';
+    if (snapshot.empty) {
+      talesList.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Nenhum conto publicado.</p>';
+      return;
+    }
+    
+    snapshot.forEach(docSnap => {
+      const tale = { id: docSnap.id, ...docSnap.data() };
+      
+      // Format date for list view
+      let formattedDate = "";
+      let isoDate = "";
+      if (tale.dataPublicacao) {
+        const d = tale.dataPublicacao.toDate();
+        formattedDate = d.toLocaleDateString('pt-BR');
+        isoDate = d.toISOString().split('T')[0];
+      }
+      
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'list-item';
+      
+      itemDiv.innerHTML = `
+        <div class="list-item-info">
+          <div class="list-item-title">${tale.titulo}</div>
+          <div class="list-item-meta">Publicado em ${formattedDate}</div>
+        </div>
+        <div class="list-item-actions">
+          <button class="action-btn edit-btn" onclick="editTale('${tale.id}', '${escapeJS(tale.titulo)}', '${isoDate}', '${escapeJS((tale.tags || []).join(','))}', '${escapeJS(tale.conteudo)}')" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="action-btn delete-btn" onclick="deleteTale('${tale.id}', '${escapeJS(tale.titulo)}')" title="Excluir">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      `;
+      talesList.appendChild(itemDiv);
+    });
+  });
+}
+
+// Global actions exposed to window
+window.editSpell = function(id, nome, categoria, efeito) {
+  document.getElementById('spell-id').value = id;
+  document.getElementById('spell-name').value = unescapeJS(nome);
+  document.getElementById('spell-category').value = unescapeJS(categoria);
+  document.getElementById('spell-effect').value = unescapeJS(efeito);
+  
+  document.getElementById('spell-form-title').innerText = 'Editar Feitiço';
+  document.getElementById('spell-cancel-btn').style.display = 'block';
+  
+  // Scroll to form
+  document.getElementById('spell-form').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.deleteSpell = async function(id, nome) {
+  if (confirm(`Tem certeza que deseja excluir o feitiço "${unescapeJS(nome)}"?`)) {
+    try {
+      await deleteDoc(doc(db, "feiticos", id));
+      if (document.getElementById('spell-id').value === id) resetSpellForm();
+    } catch (error) {
+      console.error("Erro ao deletar: ", error);
+      alert("Erro ao deletar feitiço.");
+    }
+  }
+};
+
+window.editTale = function(id, titulo, dateStr, tags, conteudo) {
+  document.getElementById('tale-id').value = id;
+  document.getElementById('tale-title').value = unescapeJS(titulo);
+  document.getElementById('tale-date').value = dateStr;
+  document.getElementById('tale-tags').value = unescapeJS(tags);
+  document.getElementById('tale-content').value = unescapeJS(conteudo);
+  
+  document.getElementById('tale-form-title').innerText = 'Editar Narrativa';
+  document.getElementById('tale-cancel-btn').style.display = 'block';
+  
+  // Scroll to form
+  document.getElementById('tale-form').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.deleteTale = async function(id, titulo) {
+  if (confirm(`Tem certeza que deseja excluir o conto "${unescapeJS(titulo)}"?`)) {
+    try {
+      await deleteDoc(doc(db, "contos", id));
+      if (document.getElementById('tale-id').value === id) resetTaleForm();
+    } catch (error) {
+      console.error("Erro ao deletar: ", error);
+      alert("Erro ao deletar conto.");
+    }
+  }
+};
+
+// Escape utilities for onclick attributes
+function escapeJS(str) {
+  if (!str) return '';
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r');
+}
+
+function unescapeJS(str) {
+  if (!str) return '';
+  return str
+    .replace(/\\n/g, '\n')
+    .replace(/\\r/g, '\r')
+    .replace(/\\'/g, "'")
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\');
+}
+</script>
+
+</body>
+</html>

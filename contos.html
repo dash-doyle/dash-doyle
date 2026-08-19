@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contos de Dashiell Doyle — Hogwarts 2099</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Gryffindor Palette - Deep Crimson, Gold & Amber */
+  --bg-dark: #110708;
+  --bg-card: #1c0b0e;
+  --bg-card-hover: #2a1014;
+  --crimson-dark: #3b0a0e;
+  --crimson: #7a1219;
+  --crimson-bright: #ad1823;
+  --gold-dark: #8c6d23;
+  --gold: #d4af37;
+  --gold-bright: #f5cf56;
+  --amber: #e67e22;
+  --parchment-bg: #f4ebd0;
+  --parchment-border: #d4c59a;
+  --parchment-text: #1f140e;
+  --text-main: #f5ebdf;
+  --text-muted: #c4b3a3;
+  --text-dim: #8a7667;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --border-crimson: rgba(173, 24, 35, 0.3);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.15);
+  --shadow-crimson: 0 0 30px rgba(122, 18, 25, 0.4);
+  --font-title: 'Cinzel', serif;
+  --font-decorative: 'Cinzel Decorative', serif;
+  --font-body: 'Literata', serif;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--crimson-dark);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+#spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(122, 18, 25, 0.28), transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.09), transparent 50%),
+    radial-gradient(circle at 15% 50%, rgba(59, 10, 14, 0.45), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+}
+
+/* Navigation Bar */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17, 7, 8, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.site-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: justify;
+  height: 70px;
+}
+
+.nav-brand-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+}
+
+.nav-brand svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--gold);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--gold-bright);
+  text-shadow: 0 0 10px rgba(245, 207, 86, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .nav-links { display: none; }
+}
+
+/* Header Section */
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-top: 50px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.section-eyebrow::before,
+.section-eyebrow::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--gold-dark);
+}
+
+.section-title {
+  font-family: var(--font-decorative);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+}
+
+.section-desc {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* Parchment Scroll Box */
+.parchment-scroll {
+  background-color: var(--parchment-bg);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), transparent),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 24px;
+  border: 1px solid var(--parchment-border);
+  box-shadow: 
+    0 15px 45px rgba(0, 0, 0, 0.8),
+    inset 0 0 50px rgba(122, 92, 67, 0.35);
+  border-radius: 8px;
+  padding: 50px 40px;
+  color: var(--parchment-text);
+  position: relative;
+  margin-bottom: 60px;
+  min-height: 400px;
+}
+
+@media (max-width: 768px) {
+  .parchment-scroll { padding: 30px 20px; }
+}
+
+.parchment-scroll::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(122, 92, 67, 0.2);
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+.wax-seal {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle, #b81d24 0%, #7a0c10 100%);
+  border-radius: 50%;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.wax-seal svg {
+  width: 28px;
+  height: 28px;
+  fill: #f5cf56;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* LIST VIEW */
+.tales-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.tale-card {
+  background: #fdfaf0;
+  border: 1px solid var(--parchment-border);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tale-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(122, 92, 67, 0.12);
+  border-color: #8c6d23;
+}
+
+.tale-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #7a5c43;
+}
+
+.tale-date {
+  font-weight: 600;
+}
+
+.tale-tags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tale-tag {
+  background: rgba(122, 18, 25, 0.06);
+  border: 1px solid rgba(122, 18, 25, 0.15);
+  color: var(--crimson);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.tale-title {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #7a1219;
+  margin-bottom: 15px;
+}
+
+.tale-snippet {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3b2c21;
+  margin-bottom: 20px;
+}
+
+.read-tale-btn {
+  background: transparent;
+  border: 1.5px solid #7a1219;
+  color: #7a1219;
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.read-tale-btn:hover {
+  background: #7a1219;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(122, 18, 25, 0.25);
+}
+
+.read-tale-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* SINGLE VIEW */
+.single-view-container {
+  display: none;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #7a5c43;
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+  transition: color 0.2s;
+  padding: 5px 0;
+}
+
+.back-btn:hover {
+  color: #7a1219;
+}
+
+.back-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.single-header {
+  border-bottom: 1px solid var(--parchment-border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.single-title {
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #7a1219;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.single-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #1f140e;
+}
+
+.single-content p {
+  margin-bottom: 1.5em;
+  text-indent: 1.5em;
+}
+
+.single-content p:first-of-type {
+  text-indent: 0;
+}
+
+/* Drop cap style for first letter of a tale */
+.single-content p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-decorative);
+  font-size: 3.5rem;
+  line-height: 1;
+  padding-right: 8px;
+  color: #7a1219;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7a5c43;
+}
+
+.empty-state svg {
+  width: 60px;
+  height: 60px;
+  fill: #d4c59a;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+/* Footer mark */
+.scroll-footer-mark {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7a5c43;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--parchment-border);
+}
+
+/* Footer style consistent with website */
+footer {
+  border-top: 1px solid var(--border-gold);
+  background: #110708;
+  padding: 30px 0;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: 40px;
+}
+
+.footer-text {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<!-- Canvas Ember Animation -->
+<canvas id="spark-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<!-- NAVIGATION BAR -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <div class="nav-brand-container">
+      <a href="index.html#inicio" class="nav-brand">
+        <!-- Gryffindor Lion Crest Icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 2.18l7 2.33v4.69c0 4.54-3.13 8.78-7 9.8-3.87-1.02-7-5.26-7-9.8V6.51l7-2.33zM12 7a2 2 0 0 0-2 2c0 1.1.9 2 2 2s2-.9 2-2a2 2 0 0 0-2-2zm-3 7c0-1.5 1.5-3 3-3s3 1.5 3 3v2H9v-2z"/>
+        </svg>
+        <span>Dash Doyle</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#inicio">Início</a></li>
+        <li><a href="index.html#historia">História</a></li>
+        <li><a href="index.html#sangue-draconiano">Sangue Draconiano</a></li>
+        <li><a href="ficha.html">Ficha RPG</a></li>
+        <li><a href="grimorio.html">Grimório</a></li>
+        <li><a href="contos.html" class="active">Contos</a></li>
+        <li><a href="index.html#linhagem">Linhagem</a></li>
+        <li><a href="index.html#familia">Família</a></li>
+        <li><a href="index.html#carta">Carta</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <!-- PAGE HEADER -->
+  <header class="section-header">
+    <div class="section-eyebrow">diário & narrativas</div>
+    <h1 class="section-title">Contos & Histórias</h1>
+    <p class="section-desc">
+      Acompanhe os relatos, crônicas narrativas e registros das aventuras e desventuras de Dashiell Doyle no RPG.
+    </p>
+  </header>
+
+  <!-- PARCHMENT BOX CONTENT -->
+  <main class="parchment-scroll">
+    <div class="wax-seal" title="Contos">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 17.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1-5.5h-2V7h2v5z"/>
+      </svg>
+    </div>
+
+    <!-- LIST VIEW CONTAINER -->
+    <div id="list-view-container">
+      <div class="tales-grid" id="tales-container">
+        <!-- Loading State -->
+        <div class="empty-state" id="loading-indicator">
+          <svg viewBox="0 0 24 24" style="animation: spin 1.5s linear infinite;"><path d="M12 4V2C6.48 2 2 6.48 2 12h2c0-4.41 3.59-8 8-8zm0 14c4.41 0 8-3.59 8-8h2c0 5.52-4.48 10-10 10v-2z"/></svg>
+          <h3>Abrindo pergaminhos...</h3>
+          <p>Buscando registros e relatos no santuário...</p>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <h3>Nenhum conto registrado ainda</h3>
+        <p>Acesse o Painel Administrativo para escrever e publicar a primeira narrativa.</p>
+      </div>
+    </div>
+
+    <!-- SINGLE VIEW CONTAINER -->
+    <div id="single-view-container" class="single-view-container">
+      <button class="back-btn" onclick="showListView()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Voltar para todos os contos
+      </button>
+      
+      <article>
+        <header class="single-header">
+          <div class="tale-meta">
+            <span class="tale-date" id="single-date"></span>
+            <div class="tale-tags-group" id="single-tags"></div>
+          </div>
+          <h2 class="single-title" id="single-title"></h2>
+        </header>
+        <div class="single-content" id="single-content"></div>
+      </article>
+    </div>
+
+    <div class="scroll-footer-mark">
+      ✦ Registro de Histórias e Crônicas ✦
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p class="footer-text">
+      Ficha de Personagem RPG · Dashiell Doyle · Universo Harry Potter 2099
+    </p>
+  </div>
+</footer>
+
+<!-- Spark animation script -->
+<script>
+const canvas = document.getElementById('spark-canvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+
+function initCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+  const count = Math.floor(width * 0.03);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2 + 0.5,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: -Math.random() * 0.6 - 0.2,
+      opacity: Math.random() * 0.6 + 0.3,
+      color: Math.random() > 0.4 ? '#d4af37' : '#ad1823'
+    });
+  }
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, width, height);
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if (p.y < 0) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+</script>
+
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+
+<!-- Firebase Script -->
+<script type="module">
+import { db } from "./firebase-config.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+let allTales = [];
+
+async function loadTales() {
+  const container = document.getElementById('tales-container');
+  const empty = document.getElementById('empty-state');
+  
+  try {
+    const q = query(collection(db, "contos"), orderBy("dataPublicacao", "desc"));
+    const querySnapshot = await getDocs(q);
+    
+    allTales = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      // Safe conversion for date
+      let formattedDate = "";
+      if (data.dataPublicacao) {
+        const d = data.dataPublicacao.toDate();
+        formattedDate = d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+      allTales.push({ id: doc.id, formattedDate, ...data });
+    });
+    
+    // Hide loader
+    document.getElementById('loading-indicator').style.display = 'none';
+    
+    renderTales();
+    
+    // Check if deep link to a specific tale is in the URL hash (e.g. #id-do-conto)
+    const hash = window.location.hash.substring(1);
+    if (hash && hash.length > 5) {
+      showTale(hash);
+    }
+  } catch (error) {
+    console.error("Erro ao carregar contos do Firestore: ", error);
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+        <h3>Erro ao carregar diários</h3>
+        <p>Por favor, recarregue a página ou tente novamente mais tarde.</p>
+      </div>
+    `;
+  }
+}
+
+function renderTales() {
+  const container = document.getElementById('tales-container');
+  const empty = document.getElementById('empty-state');
+  
+  container.innerHTML = '';
+  
+  if (allTales.length === 0) {
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    allTales.forEach(tale => {
+      const card = document.createElement('div');
+      card.className = 'tale-card';
+      
+      const snippet = getSnippet(tale.conteudo, 260);
+      
+      // Render Tags
+      let tagsHTML = '';
+      if (tale.tags && Array.isArray(tale.tags)) {
+        tale.tags.forEach(t => {
+          if (t.trim()) {
+            tagsHTML += `<span class="tale-tag">#${t.trim()}</span>`;
+          }
+        });
+      }
+      
+      card.innerHTML = `
+        <div class="tale-meta">
+          <span class="tale-date">${tale.formattedDate}</span>
+          <div class="tale-tags-group">${tagsHTML}</div>
+        </div>
+        <h3 class="tale-title">${tale.titulo}</h3>
+        <p class="tale-snippet">${snippet}</p>
+        <button class="read-tale-btn" onclick="showTale('${tale.id}')">
+          Ler conto
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </button>
+      `;
+      container.appendChild(card);
+    });
+  }
+}
+
+function getSnippet(text, length) {
+  if (!text) return '';
+  // Strip simple HTML tags if any
+  let plain = text.replace(/<[^>]*>/g, '');
+  if (plain.length <= length) return plain;
+  return plain.substring(0, length) + '...';
+}
+
+window.showTale = function(id) {
+  const tale = allTales.find(t => t.id === id);
+  if (!tale) return;
+  
+  // Set URL hash for deep linking
+  window.location.hash = id;
+  
+  document.getElementById('list-view-container').style.display = 'none';
+  document.getElementById('single-view-container').style.display = 'block';
+  
+  document.getElementById('single-title').innerText = tale.titulo;
+  document.getElementById('single-date').innerText = tale.formattedDate;
+  
+  // Format content paragraphs
+  const paragraphs = tale.conteudo.split('\n\n').filter(p => p.trim());
+  const contentHTML = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  document.getElementById('single-content').innerHTML = contentHTML;
+  
+  // Render Tags in single view
+  const tagsContainer = document.getElementById('single-tags');
+  tagsContainer.innerHTML = '';
+  if (tale.tags && Array.isArray(tale.tags)) {
+    tale.tags.forEach(t => {
+      if (t.trim()) {
+        const span = document.createElement('span');
+        span.className = 'tale-tag';
+        span.innerText = `#${t.trim()}`;
+        tagsContainer.appendChild(span);
+      }
+    });
+  }
+  
+  // Scroll to top of the main element
+  document.querySelector('.parchment-scroll').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.showListView = function() {
+  // Clear URL hash
+  history.replaceState(null, null, ' ');
+  
+  document.getElementById('single-view-container').style.display = 'none';
+  document.getElementById('list-view-container').style.display = 'block';
+  
+  document.querySelector('.parchment-scroll').scrollIntoView({ behavior: 'smooth' });
+};
+
+// Listen to hash change to handle back/forward browser navigation
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.substring(1);
+  if (hash && hash.length > 5) {
+    showTale(hash);
+  } else {
+    showListView();
+  }
+});
+
+// Initial load
+loadTales();
+</script>
+
+</body>
+</html>

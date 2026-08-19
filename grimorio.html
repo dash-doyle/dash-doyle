@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grimório de Dashiell Doyle — Hogwarts 2099</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Gryffindor Palette - Deep Crimson, Gold & Amber */
+  --bg-dark: #110708;
+  --bg-card: #1c0b0e;
+  --bg-card-hover: #2a1014;
+  --crimson-dark: #3b0a0e;
+  --crimson: #7a1219;
+  --crimson-bright: #ad1823;
+  --gold-dark: #8c6d23;
+  --gold: #d4af37;
+  --gold-bright: #f5cf56;
+  --amber: #e67e22;
+  --parchment-bg: #f4ebd0;
+  --parchment-border: #d4c59a;
+  --parchment-text: #1f140e;
+  --text-main: #f5ebdf;
+  --text-muted: #c4b3a3;
+  --text-dim: #8a7667;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --border-crimson: rgba(173, 24, 35, 0.3);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.15);
+  --shadow-crimson: 0 0 30px rgba(122, 18, 25, 0.4);
+  --font-title: 'Cinzel', serif;
+  --font-decorative: 'Cinzel Decorative', serif;
+  --font-body: 'Literata', serif;
+  --font-ui: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--crimson-dark);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+#spark-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+.bg-vignette {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(122, 18, 25, 0.28), transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.09), transparent 50%),
+    radial-gradient(circle at 15% 50%, rgba(59, 10, 14, 0.45), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+}
+
+/* Navigation Bar */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17, 7, 8, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.site-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: justify;
+  height: 70px;
+}
+
+.nav-brand-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--gold-bright);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+}
+
+.nav-brand svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--gold);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--gold-bright);
+  text-shadow: 0 0 10px rgba(245, 207, 86, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .nav-links { display: none; }
+}
+
+/* Header Section */
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-top: 50px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.section-eyebrow::before,
+.section-eyebrow::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--gold-dark);
+}
+
+.section-title {
+  font-family: var(--font-decorative);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+}
+
+.section-desc {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* Parchment Box for Grimório */
+.parchment-scroll {
+  background-color: var(--parchment-bg);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), transparent),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 24px;
+  border: 1px solid var(--parchment-border);
+  box-shadow: 
+    0 15px 45px rgba(0, 0, 0, 0.8),
+    inset 0 0 50px rgba(122, 92, 67, 0.35);
+  border-radius: 8px;
+  padding: 50px 40px;
+  color: var(--parchment-text);
+  position: relative;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .parchment-scroll { padding: 30px 20px; }
+}
+
+/* Ornate corners */
+.parchment-scroll::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(122, 92, 67, 0.2);
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+/* Wax Seal decoration */
+.wax-seal {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle, #b81d24 0%, #7a0c10 100%);
+  border-radius: 50%;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.wax-seal svg {
+  width: 28px;
+  height: 28px;
+  fill: #f5cf56;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* Search and Filters */
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 5;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 20px 14px 50px;
+  background: rgba(30, 20, 15, 0.05);
+  border: 1.5px solid var(--parchment-border);
+  border-radius: 30px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--parchment-text);
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: #8c6d23;
+  box-shadow: 0 0 10px rgba(140, 109, 35, 0.2), inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-wrapper svg {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  fill: #7a5c43;
+}
+
+/* Filter Tags */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--parchment-border);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7a5c43;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: rgba(122, 92, 67, 0.08);
+  color: var(--parchment-text);
+}
+
+.filter-btn.active {
+  background: #7a1219;
+  border-color: #7a1219;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(122, 18, 25, 0.35);
+}
+
+/* Spell Grid and Cards */
+.spell-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.spell-card {
+  background: #fdfaf0;
+  border: 1px solid var(--parchment-border);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.spell-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #8c6d23;
+}
+
+.spell-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(122, 92, 67, 0.15);
+  border-color: #8c6d23;
+}
+
+.spell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 15px;
+}
+
+.spell-name {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #7a1219;
+}
+
+.spell-category-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(140, 109, 35, 0.12);
+  color: #8c6d23;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(140, 109, 35, 0.2);
+  white-space: nowrap;
+}
+
+.spell-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #3b2c21;
+  font-family: var(--font-body);
+  white-space: pre-wrap;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7a5c43;
+}
+
+.empty-state svg {
+  width: 60px;
+  height: 60px;
+  fill: #d4c59a;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+}
+
+/* Footer mark */
+.scroll-footer-mark {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7a5c43;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--parchment-border);
+}
+
+/* Footer style consistent with website */
+footer {
+  border-top: 1px solid var(--border-gold);
+  background: #110708;
+  padding: 30px 0;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: 40px;
+}
+
+.footer-text {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<!-- Canvas Ember Animation -->
+<canvas id="spark-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<!-- NAVIGATION BAR -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <div class="nav-brand-container">
+      <a href="index.html#inicio" class="nav-brand">
+        <!-- Gryffindor Lion Crest Icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm0 2.18l7 2.33v4.69c0 4.54-3.13 8.78-7 9.8-3.87-1.02-7-5.26-7-9.8V6.51l7-2.33zM12 7a2 2 0 0 0-2 2c0 1.1.9 2 2 2s2-.9 2-2a2 2 0 0 0-2-2zm-3 7c0-1.5 1.5-3 3-3s3 1.5 3 3v2H9v-2z"/>
+        </svg>
+        <span>Dash Doyle</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#inicio">Início</a></li>
+        <li><a href="index.html#historia">História</a></li>
+        <li><a href="index.html#sangue-draconiano">Sangue Draconiano</a></li>
+        <li><a href="ficha.html">Ficha RPG</a></li>
+        <li><a href="grimorio.html" class="active">Grimório</a></li>
+        <li><a href="contos.html">Contos</a></li>
+        <li><a href="index.html#linhagem">Linhagem</a></li>
+        <li><a href="index.html#familia">Família</a></li>
+        <li><a href="index.html#carta">Carta</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <!-- PAGE HEADER -->
+  <header class="section-header">
+    <div class="section-eyebrow">grimório de estudos</div>
+    <h1 class="section-title">Grimório & Caderno de Feitiços</h1>
+    <p class="section-desc">
+      Anotações teóricas de aulas, feitiços selecionados e encantamentos estudados ou dominados por Dashiell Doyle durante os seus anos letivos.
+    </p>
+  </header>
+
+  <!-- PARCHMENT BOX CONTENT -->
+  <main class="parchment-scroll">
+    <div class="wax-seal" title="Grimório">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+      </svg>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls-container">
+      <!-- Search -->
+      <div class="search-wrapper">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" class="search-input" id="search-input" placeholder="Pesquisar feitiço ou efeito..." oninput="filterSpells()">
+      </div>
+
+      <!-- Categories -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="setCategory('Todos', this)">Todos</button>
+        <button class="filter-btn" onclick="setCategory('Feitiços', this)">Feitiços</button>
+        <button class="filter-btn" onclick="setCategory('Transfiguração', this)">Transfiguração</button>
+        <button class="filter-btn" onclick="setCategory('Herbologia', this)">Herbologia</button>
+        <button class="filter-btn" onclick="setCategory('DCAT', this)">DCAT</button>
+        <button class="filter-btn" onclick="setCategory('Poções', this)">Poções</button>
+        <button class="filter-btn" onclick="setCategory('Anotações Gerais', this)">Anotações</button>
+      </div>
+    </div>
+
+    <!-- SPELLS CONTAINER -->
+    <div class="spell-grid" id="spells-container">
+      <!-- Loading State -->
+      <div class="empty-state" id="loading-indicator">
+        <svg viewBox="0 0 24 24" style="animation: spin 1.5s linear infinite;"><path d="M12 4V2C6.48 2 2 6.48 2 12h2c0-4.41 3.59-8 8-8zm0 14c4.41 0 8-3.59 8-8h2c0 5.52-4.48 10-10 10v-2z"/></svg>
+        <h3>Consultando arquivos...</h3>
+        <p>Acessando o banco de dados de Hogwarts.</p>
+      </div>
+    </div>
+
+    <!-- Empty State (hidden by default) -->
+    <div class="empty-state" id="empty-state" style="display: none;">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <h3>Nenhum feitiço encontrado</h3>
+      <p>Nenhum registro corresponde aos filtros ou termos buscados.</p>
+    </div>
+
+    <div class="scroll-footer-mark">
+      ✦ Compilação de Estudos Mágicos Oficiais ✦
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p class="footer-text">
+      Ficha de Personagem RPG · Dashiell Doyle · Universo Harry Potter 2099
+    </p>
+  </div>
+</footer>
+
+<!-- Spark animation script -->
+<script>
+const canvas = document.getElementById('spark-canvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+
+function initCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+  const count = Math.floor(width * 0.03);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2 + 0.5,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: -Math.random() * 0.6 - 0.2,
+      opacity: Math.random() * 0.6 + 0.3,
+      color: Math.random() > 0.4 ? '#d4af37' : '#ad1823'
+    });
+  }
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, width, height);
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if (p.y < 0) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.opacity;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+</script>
+
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+
+<!-- Firebase Script -->
+<script type="module">
+import { db } from "./firebase-config.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+let allSpells = [];
+let currentCategory = "Todos";
+
+async function loadSpells() {
+  const container = document.getElementById('spells-container');
+  const empty = document.getElementById('empty-state');
+  
+  try {
+    const q = query(collection(db, "feiticos"), orderBy("nome", "asc"));
+    const querySnapshot = await getDocs(q);
+    
+    allSpells = [];
+    querySnapshot.forEach((doc) => {
+      allSpells.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Hide loader
+    document.getElementById('loading-indicator').style.display = 'none';
+    
+    renderSpells();
+  } catch (error) {
+    console.error("Erro ao carregar feitiços do Firestore: ", error);
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
+        <h3>Erro ao conectar ao banco de dados</h3>
+        <p>Por favor, recarregue a página ou tente novamente mais tarde.</p>
+      </div>
+    `;
+  }
+}
+
+function renderSpells() {
+  const container = document.getElementById('spells-container');
+  const empty = document.getElementById('empty-state');
+  const searchText = document.getElementById('search-input').value.toLowerCase();
+  
+  container.innerHTML = '';
+  
+  const filtered = allSpells.filter(spell => {
+    const matchesCategory = (currentCategory === "Todos" || spell.categoria === currentCategory);
+    const matchesSearch = (spell.nome.toLowerCase().includes(searchText) || spell.efeito.toLowerCase().includes(searchText));
+    return matchesCategory && matchesSearch;
+  });
+  
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    filtered.forEach(spell => {
+      const card = document.createElement('div');
+      card.className = 'spell-card';
+      
+      // Matéria mapping to beautiful tags
+      let tagLabel = spell.categoria;
+      if (spell.categoria === "DCAT") tagLabel = "D.C.A.T.";
+      
+      card.innerHTML = `
+        <div class="spell-header">
+          <h3 class="spell-name">${spell.nome}</h3>
+          <span class="spell-category-tag">${tagLabel}</span>
+        </div>
+        <p class="spell-desc">${spell.efeito}</p>
+      `;
+      container.appendChild(card);
+    });
+  }
+}
+
+window.setCategory = function(category, element) {
+  currentCategory = category;
+  
+  // Update active state class on buttons
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  element.classList.add('active');
+  
+  renderSpells();
+};
+
+window.filterSpells = function() {
+  renderSpells();
+};
+
+// Initial load
+loadSpells();
+</script>
+
+</body>
+</html>
